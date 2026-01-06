@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+body {
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh; /* preferred */
+  padding: 0;
+  margin: 0;
+}

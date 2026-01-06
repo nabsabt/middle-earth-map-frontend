@@ -1,8 +1,8 @@
 import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
-import { App } from './app/app';
+import { MapRootComponent } from './app/@Component/map/map.root.component';
 import { config } from './app/app.config.server';
 
 const bootstrap = (context: BootstrapContext) =>
-    bootstrapApplication(App, config, context);
+  bootstrapApplication(MapRootComponent, config, context);
 
 export default bootstrap;
