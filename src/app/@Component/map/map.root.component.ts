@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
+import { Map } from 'maplibre-gl';
 @Component({
   selector: 'map-root',
   templateUrl: './map.root.component.html',
@@ -34,18 +35,36 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * NEVER run maplibre with SSR
      */
-    if (!isPlatformBrowser(this.platformId) || this.map) return;
-    const maplibregl = await import('maplibre-gl');
+    if (!isPlatformBrowser(this.platformId)) return;
 
+    const maplibregl = await import('maplibre-gl'); // IMPORTANT: no top-level import
     this.map = new maplibregl.Map({
       container: 'map',
-      style: 'https://demotiles.maplibre.org/style.json', // replace with yours
-      center: [19.04, 47.5], // [lng, lat]
-      zoom: 5,
-      //attributionControl: true,
+      //style: 'https://demotiles.maplibre.org/style.json',,
+      style: { version: 8, sources: {}, layers: [] },
+      center: [-0.29441497, 1.340374], // [lng, lat]
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 9,
     });
 
     this.map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    this.map.on('load', () => {
+      this.map.addSource('basemap', {
+        type: 'raster',
+        tiles: ['http://localhost:8080/data/basemap/{z}/{x}/{y}.png'],
+        tileSize: 256,
+        minzoom: 5,
+        maxzoom: 10,
+      });
+
+      this.map.addLayer({
+        id: 'basemap',
+        type: 'raster',
+        source: 'basemap',
+      });
+    });
   }
   ngOnDestroy(): void {}
 }
