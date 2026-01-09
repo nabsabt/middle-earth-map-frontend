@@ -13,7 +13,7 @@ export class MapHelperService {
       container: 'map',
       style: { version: 8, sources: {}, layers: [] },
       center: [-0.29441497, 1.340374], // [lng, lat]
-      zoom: 6,
+      zoom: 5.5,
       minZoom: 5,
       maxZoom: 9,
       maxBounds: [
@@ -64,6 +64,7 @@ export class MapHelperService {
 
       map.on('click', (e: any) => {
         console.log(e.lngLat);
+        console.log(map.getZoom());
       });
     });
 

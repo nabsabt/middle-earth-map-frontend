@@ -1,3 +1,4 @@
 export const environment = {
-  apiURL: 'https://middleearthmap.eu',
+  apiURL: 'http://localhost:3000',
+  //apiURL élesben: '/',
 };

@@ -1,0 +1,118 @@
+/* search.component.scss */
+.me-search {
+  /* tweakables */
+  --bg: rgba(237, 220, 183, 0.92); /* beige */
+  --text: #202020;
+  --placeholder: rgba(32, 32, 32, 0.55);
+
+  --inner: inset 2px 2px 4px rgba(255, 243, 176, 0.74); /* your figma inner shadow vibe */
+  --outer: 0 3px 8px rgba(0, 0, 0, 0.22);
+
+  --ring: 0 0 0 2px rgba(255, 243, 176, 0.55); /* subtle glow ring */
+  --h: 46px;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  height: var(--h);
+  width: min(560px, 92vw);
+
+  border-radius: 999px;
+  background: var(--bg);
+  box-shadow: var(--outer), var(--inner);
+
+  /* helps “soft” look on map background */
+  backdrop-filter: blur(2px);
+
+  /* smooth animation */
+  transition: transform 140ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.me-search__input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+
+  padding: 0 112px 0 18px; /* right space for buttons */
+  color: var(--text);
+
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  /* optional: a tiny “glow” like your gold text vibe, very subtle */
+  text-shadow: 0 0 6px rgba(255, 243, 176, 0.2);
+
+  &::placeholder {
+    color: var(--placeholder);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+.me-search__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  height: 34px;
+  width: 34px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+
+  display: grid;
+  place-items: center;
+
+  cursor: pointer;
+  padding: 0;
+  user-select: none;
+
+  transition: background-color 140ms ease, transform 140ms ease, opacity 140ms ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+}
+
+.me-search__btn--icon {
+  right: 12px;
+}
+
+.me-search__btn--clear {
+  right: 54px;
+  font-size: 16px;
+  color: rgba(32, 32, 32, 0.65);
+}
+
+.me-search__svg {
+  width: 18px;
+  height: 18px;
+  fill: rgba(32, 32, 32, 0.6);
+}
+
+.me-search__btn--icon:hover .me-search__svg {
+  fill: rgba(32, 32, 32, 0.85);
+}
+
+/* Focus animation / state */
+.me-search--focused {
+  transform: translateY(-1px);
+  box-shadow: var(--outer), var(--inner), var(--ring);
+}
+
+/* Optional: reduce motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .me-search,
+  .me-search__btn {
+    transition: none;
+  }
+}

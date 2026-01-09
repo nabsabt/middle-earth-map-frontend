@@ -1,9 +1,147 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+
+html {
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
 /* You can add global styles to this file, and also import other style files */
 //@import 'maplibre-gl/dist/maplibre-gl.css';
+
+@font-face {
+  font-family: 'Cinzel';
+  src: url('/assets/fonts/Cinzel-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   min-height: 100vh; /* fallback */
   min-height: 100dvh; /* preferred */
   padding: 0;
   margin: 0;
+  font-family: Cinzel;
+}
+
+:root {
+  --mobile-breakpoint: 768px;
+}
+
+.secondary-btn {
+  height: 25px;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+
+  background-color: #eddcb7; // default bg
+  color: #202020; // default text
+
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease,
+    transform 80ms ease;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background-color: #d7c08f; // hover bg
+    color: #202020;
+  }
+
+  &:active,
+  &.active {
+    background-color: #635639; // clicked bg
+    color: #f5f5f5;
+
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.primary-btn {
+  height: 25px;
+  width: auto;
+  /* --- tweakables --- */
+  --bg-default: #2f4f3a;
+  --bg-hover: #3f6b4c;
+  --bg-active: #ffc933;
+
+  --text-gold: #f2c94c;
+  --text-active: #2f4f3a;
+
+  /* outer shadow (keep same vibe as secondary) */
+  --outer-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+
+  /* subtle text glow */
+  --text-glow: 0 0 6px rgba(255, 243, 176, 0.55), 0 0 2px rgba(255, 243, 176, 0.6);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+
+  background-color: var(--bg-default);
+  color: var(--text-gold);
+
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  user-select: none;
+
+  /* outer + inner */
+  box-shadow: var(--outer-shadow), var(--inner-shadow);
+
+  /* text glow */
+  text-shadow: var(--text-glow);
+
+  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease,
+    transform 80ms ease, text-shadow 160ms ease;
+
+  &:hover {
+    background-color: var(--bg-hover);
+    /* keep glow */
+  }
+
+  &:active,
+  &.active {
+    background-color: var(--bg-active);
+    color: var(--text-active);
+
+    /* on yellow, glow should be weaker (otherwise it looks fuzzy) */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), var(--inner-shadow);
+  }
+
+  /* if you use SVG icons inside, make them follow text color */
+  svg {
+    fill: currentColor;
+    stroke: currentColor;
+  }
 }

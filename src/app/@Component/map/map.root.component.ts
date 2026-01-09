@@ -1,18 +1,36 @@
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { MapHelperService } from '../../@Service/map.helper.service';
+import { MapRootService } from '../../@Service/map.root.service';
+import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { SearchInputComponent } from '../search-input/search.input.component';
+
 @Component({
   selector: 'map-root',
   templateUrl: './map.root.component.html',
   styleUrl: './map.root.component.scss',
   standalone: true,
-  providers: [MapHelperService],
-  imports: [],
+  providers: [MapHelperService, MapRootService],
+  imports: [FormsModule, SearchInputComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
+  private getTestSub: Subscription;
+
   private title = inject(Title);
   private meta = inject(Meta);
   private mapHelper = inject(MapHelperService);
+  private mapService = inject(MapRootService);
 
   public map: any;
 
@@ -29,9 +47,21 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getTestSub = this.mapService.getTestResult({ input: 'valami bevitel' }).subscribe({
+      next: (res) => {
+        console.log('Test API response:', res);
+      },
+      error: (err: HttpErrorResponse): HttpErrorResponse => {
+        return err;
+      },
+    });
+  }
+
   ngAfterViewInit() {
     this.map = this.mapHelper.initializeMap();
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.getTestSub?.unsubscribe();
+  }
 }
