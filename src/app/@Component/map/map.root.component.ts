@@ -5,7 +5,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { MapHelperService } from '../../@Service/map.helper.service';

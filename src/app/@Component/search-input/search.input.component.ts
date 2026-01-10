@@ -11,6 +11,7 @@ import { SearchResults } from '../../@Interface/maproot.interface';
 import { Subscription } from 'rxjs';
 import { MapRootService } from '../../@Service/map.root.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from '../../@Service/alert.service';
 
 @Component({
   selector: 'search-input',
@@ -18,12 +19,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './search.input.component.scss',
   standalone: true,
   imports: [CommonModule],
-  providers: [MapRootService],
+  providers: [MapRootService, AlertService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchInputComponent implements OnDestroy {
   private getSearchResultSub: Subscription;
+
   private mapService = inject(MapRootService);
+  private alertService = inject(AlertService);
+
   public value = model<string>('');
   public isFocused = signal<boolean>(false);
 
@@ -36,12 +40,21 @@ export class SearchInputComponent implements OnDestroy {
       .getSearchResults({ input: this.value(), lang: 'en' })
       .subscribe({
         next: (res: SearchResults[]) => {
+          if (res.length === 0) {
+            this.alertService.showAlert('No results found.', { position: 'bottom' });
+            this.searchResults.set([]);
+            return;
+          }
           this.searchResults.set(res);
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
           return error;
         },
       });
+  }
+
+  public onSearchResultSelected(gisID: number) {
+    console.log('Selected GIS ID:', gisID);
   }
 
   ngOnDestroy(): void {

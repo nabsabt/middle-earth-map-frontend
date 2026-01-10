@@ -17,7 +17,7 @@
 
   border-radius: 999px;
   background: var(--bg);
-  box-shadow: var(--outer), var(--inner);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   /* helps “soft” look on map background */
   backdrop-filter: blur(2px);
@@ -93,15 +93,17 @@
 
 .search-results {
   position: absolute;
-  top: calc(var(--h) + 8px);
+  //top: calc(var(--h) + 50px);
+  margin-top: 0.3rem;
   width: min(560px, 92vw);
   height: fit-content;
   max-height: 20vh;
   background-color: var(--bg);
   border-radius: 12px;
-  box-shadow: var(--outer), var(--inner);
+  //box-shadow: var(--outer), var(--inner);
   overflow-y: auto;
   z-index: 20;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   --bg: rgba(237, 220, 183, 0.92);
   --text: #202020;

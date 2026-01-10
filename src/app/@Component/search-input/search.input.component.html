@@ -28,7 +28,7 @@
   <div class="search-results">
     <ul>
       @for(searchresult of searchResults(); track searchresult){
-      <li>{{ searchresult.name.EN }}</li>
+      <li (click)="onSearchResultSelected(searchresult.gisID)">{{ searchresult.name.EN }}</li>
       }
     </ul>
   </div>
