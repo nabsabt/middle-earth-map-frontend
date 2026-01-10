@@ -25,8 +25,6 @@ import { SearchInputComponent } from '../search-input/search.input.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
-  private getTestSub: Subscription;
-
   private title = inject(Title);
   private meta = inject(Meta);
   private mapHelper = inject(MapHelperService);
@@ -47,21 +45,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.getTestSub = this.mapService.getTestResult({ input: 'valami bevitel' }).subscribe({
-      next: (res) => {
-        console.log('Test API response:', res);
-      },
-      error: (err: HttpErrorResponse): HttpErrorResponse => {
-        return err;
-      },
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.map = this.mapHelper.initializeMap();
   }
-  ngOnDestroy(): void {
-    this.getTestSub?.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

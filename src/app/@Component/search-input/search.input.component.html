@@ -1,39 +1,36 @@
 <!-- search.component.html -->
-<div class="me-search" [class.me-search--focused]="isFocused">
-  <input
-    class="me-search__input"
-    type="text"
-    placeholder="SEARCH PLACES..."
-    [value]="value"
-    (input)="value = $any($event.target).value"
-    (focus)="isFocused = true"
-    (blur)="isFocused = false"
-  />
+<div class="search-wrapper">
+  <div class="me-search-field" [class.me-search--focused]="isFocused()">
+    <input
+      class="me-search__input"
+      type="text"
+      placeholder="SEARCH PLACES..."
+      (keyup)="onSearch()"
+      [value]="value()"
+      (input)="value.set($any($event.target).value)"
+      (focus)="isFocused.set(true)"
+      (blur)="isFocused.set(false)"
+    />
+    <!-- Clear button (only shows if there's text) -->
+    @if(value()?.length){
+    <button
+      class="me-clear__btn me-clear__btn--clear"
+      type="button"
+      aria-label="Clear"
+      (click)="value.set(''); isFocused.set(true)"
+    >
+      X
+    </button>
+    }
+  </div>
 
-  <!-- Clear button (only shows if there's text) -->
-  @if(value?.length){
-  <button
-    class="me-search__btn me-search__btn--clear"
-    type="button"
-    aria-label="Clear"
-    (click)="value = ''; isFocused = true"
-  >
-    ✕
-  </button>
+  @if(searchResults().length > 0 && value().length !== 0){
+  <div class="search-results">
+    <ul>
+      @for(searchresult of searchResults(); track searchresult){
+      <li>{{ searchresult.name.EN }}</li>
+      }
+    </ul>
+  </div>
   }
-
-  <!-- Search icon button -->
-  <button
-    class="me-search__btn me-search__btn--icon"
-    type="button"
-    aria-label="Search"
-    (click)="onSearch()"
-  >
-    <!-- Simple inline SVG (no icon libs needed) -->
-    <svg viewBox="0 0 24 24" class="me-search__svg" aria-hidden="true">
-      <path
-        d="M10 18a8 8 0 1 1 5.293-14.007A8 8 0 0 1 10 18Zm10.707 2.293-4.11-4.11a10 10 0 1 0-1.414 1.414l4.11 4.11a1 1 0 0 0 1.414-1.414Z"
-      />
-    </svg>
-  </button>
 </div>

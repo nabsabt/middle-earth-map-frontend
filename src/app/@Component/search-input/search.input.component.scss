@@ -1,20 +1,17 @@
-/* search.component.scss */
-.me-search {
-  /* tweakables */
-  --bg: rgba(237, 220, 183, 0.92); /* beige */
+.me-search-field {
+  --bg: rgba(237, 220, 183, 0.92);
   --text: #202020;
   --placeholder: rgba(32, 32, 32, 0.55);
 
-  --inner: inset 2px 2px 4px rgba(255, 243, 176, 0.74); /* your figma inner shadow vibe */
+  --inner: inset 2px 2px 4px rgba(255, 243, 176, 0.74);
   --outer: 0 3px 8px rgba(0, 0, 0, 0.22);
 
-  --ring: 0 0 0 2px rgba(255, 243, 176, 0.55); /* subtle glow ring */
+  --ring: 0 0 0 2px rgba(255, 243, 176, 0.55);
   --h: 46px;
 
   position: relative;
   display: flex;
   align-items: center;
-
   height: var(--h);
   width: min(560px, 92vw);
 
@@ -54,7 +51,7 @@
   }
 }
 
-.me-search__btn {
+.me-clear__btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -83,36 +80,56 @@
   }
 }
 
-.me-search__btn--icon {
-  right: 12px;
-}
-
-.me-search__btn--clear {
-  right: 54px;
+.me-clear__btn--clear {
+  right: 1rem;
   font-size: 16px;
   color: rgba(32, 32, 32, 0.65);
 }
 
-.me-search__svg {
-  width: 18px;
-  height: 18px;
-  fill: rgba(32, 32, 32, 0.6);
-}
-
-.me-search__btn--icon:hover .me-search__svg {
-  fill: rgba(32, 32, 32, 0.85);
-}
-
-/* Focus animation / state */
-.me-search--focused {
+.me-clear--focused {
   transform: translateY(-1px);
   box-shadow: var(--outer), var(--inner), var(--ring);
 }
 
+.search-results {
+  position: absolute;
+  top: calc(var(--h) + 8px);
+  width: min(560px, 92vw);
+  height: fit-content;
+  max-height: 20vh;
+  background-color: var(--bg);
+  border-radius: 12px;
+  box-shadow: var(--outer), var(--inner);
+  overflow-y: auto;
+  z-index: 20;
+
+  --bg: rgba(237, 220, 183, 0.92);
+  --text: #202020;
+  --inner: inset 2px 2px 4px rgba(255, 243, 176, 0.74);
+  --outer: 0 3px 8px rgba(0, 0, 0, 0.22);
+
+  --ring: 0 0 0 2px rgba(255, 243, 176, 0.55);
+
+  ul {
+    list-style: none;
+    height: fit-content;
+    li {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid rgba(32, 32, 32, 0.1);
+      color: var(--text);
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(255, 243, 176, 0.2);
+      }
+    }
+  }
+}
+
 /* Optional: reduce motion if user prefers */
 @media (prefers-reduced-motion: reduce) {
-  .me-search,
-  .me-search__btn {
+  .me-search-field,
+  .me-clear__btn {
     transition: none;
   }
 }

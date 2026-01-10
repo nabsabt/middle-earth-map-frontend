@@ -1,5 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  model,
+  OnDestroy,
+  signal,
+} from '@angular/core';
+import { SearchResults } from '../../@Interface/maproot.interface';
+import { Subscription } from 'rxjs';
+import { MapRootService } from '../../@Service/map.root.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'search-input',
@@ -7,13 +18,33 @@ import { Component } from '@angular/core';
   styleUrl: './search.input.component.scss',
   standalone: true,
   imports: [CommonModule],
+  providers: [MapRootService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchInputComponent {
-  value = '';
-  isFocused = false;
+export class SearchInputComponent implements OnDestroy {
+  private getSearchResultSub: Subscription;
+  private mapService = inject(MapRootService);
+  public value = model<string>('');
+  public isFocused = signal<boolean>(false);
+
+  public searchResults = signal<Array<SearchResults>>([]);
 
   onSearch() {
-    // TODO: call your search logic
-    console.log('search:', this.value);
+    if (this.value() === '') return;
+
+    this.getSearchResultSub = this.mapService
+      .getSearchResults({ input: this.value(), lang: 'en' })
+      .subscribe({
+        next: (res: SearchResults[]) => {
+          this.searchResults.set(res);
+        },
+        error: (error: HttpErrorResponse): HttpErrorResponse => {
+          return error;
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.getSearchResultSub?.unsubscribe();
   }
 }
