@@ -4,7 +4,7 @@
 
 <div class="navbar">
   <div class="searchbar-container">
-    <search-input></search-input>
+    <search-input (selectedGISID)="fetchGISObject($event)"></search-input>
   </div>
   <div class="user-controls-container">
     <button class="secondary-btn">paths</button>

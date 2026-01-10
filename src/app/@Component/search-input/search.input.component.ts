@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   model,
   OnDestroy,
+  Output,
   signal,
 } from '@angular/core';
 import { SearchResults } from '../../@Interface/maproot.interface';
@@ -23,6 +25,7 @@ import { AlertService } from '../../@Service/alert.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchInputComponent implements OnDestroy {
+  @Output() selectedGISID = new EventEmitter<number>();
   private getSearchResultSub: Subscription;
 
   private mapService = inject(MapRootService);
@@ -54,7 +57,9 @@ export class SearchInputComponent implements OnDestroy {
   }
 
   public onSearchResultSelected(gisID: number) {
-    console.log('Selected GIS ID:', gisID);
+    this.selectedGISID.emit(gisID);
+    this.searchResults.set([]);
+    this.value.set('');
   }
 
   ngOnDestroy(): void {

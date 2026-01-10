@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SearchInputComponent } from '../search-input/search.input.component';
+import { GISObject } from '../../@Interface/maproot.interface';
 
 @Component({
   selector: 'map-root',
@@ -24,12 +25,15 @@ import { SearchInputComponent } from '../search-input/search.input.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
+  private getObjectSub: Subscription;
+
   private title = inject(Title);
   private meta = inject(Meta);
   private mapHelper = inject(MapHelperService);
   private mapService = inject(MapRootService);
 
   public map: any;
+  public selectedObject: GISObject | undefined;
 
   constructor() {
     this.title.setTitle('Map of Middle-Earth');
@@ -49,5 +53,19 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapHelper.initializeMap();
   }
-  ngOnDestroy(): void {}
+
+  public fetchGISObject(gisID: number) {
+    console.log('Fetching GIS Object for ID:', gisID);
+    this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
+      next: (res: GISObject) => {
+        console.log(res);
+      },
+      error: (error: HttpErrorResponse): HttpErrorResponse => {
+        return error;
+      },
+    });
+  }
+  ngOnDestroy(): void {
+    this.getObjectSub?.unsubscribe();
+  }
 }
