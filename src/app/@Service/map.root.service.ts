@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environment';
 import { GISObject, SearchResults } from '../@Interface/maproot.interface';
 
 @Injectable()
 export class MapRootService {
-  constructor(private http: HttpClient) {}
+  constructor() {}
+  private http = inject(HttpClient);
 
   public getSearchResults(params: { input: string; lang: string }): Observable<SearchResults[]> {
     return this.http.get<SearchResults[]>(`${environment.apiURL}/api/getSearchResults`, { params });
