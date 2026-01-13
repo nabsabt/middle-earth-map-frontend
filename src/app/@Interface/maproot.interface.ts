@@ -26,3 +26,13 @@ export interface GISObject {
     Mi: number;
   };
 }
+
+export type LayerGroupKey = 'areas' | 'places' | 'paths';
+export type NavbarControls =
+  | 'areas'
+  | 'places'
+  | 'paths'
+  | 'discuss'
+  | 'about'
+  | 'donate'
+  | undefined;

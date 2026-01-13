@@ -9,6 +9,7 @@ import {
   PATHS_PSEUDOLINE_PAINT_VALUES,
 } from '../@Constant/map.style.values';
 import { BehaviorSubject } from 'rxjs';
+import { LayerGroupKey } from '../@Interface/maproot.interface';
 
 @Injectable()
 export class MapHelperService {
@@ -104,6 +105,8 @@ export class MapHelperService {
     });
 
     this.addMapEvents(map, 'areas', hoveredID);
+    map.setLayoutProperty('areas', 'visibility', 'none');
+    map.setLayoutProperty('areas-outline', 'visibility', 'none');
   }
 
   public async onAddPoint(points: any, map: Map) {
@@ -142,6 +145,8 @@ export class MapHelperService {
     });
 
     this.addMapEvents(map, 'places', hoveredID);
+    map.setLayoutProperty('places', 'visibility', 'none');
+    map.setLayoutProperty('places-label', 'visibility', 'none');
   }
 
   public onAddPaths(paths: any, map: Map) {
@@ -165,6 +170,8 @@ export class MapHelperService {
     });
 
     this.addMapEvents(map, 'paths', hoveredID);
+    map.setLayoutProperty('paths', 'visibility', 'none');
+    map.setLayoutProperty('paths-pseudo', 'visibility', 'none');
   }
 
   /**
@@ -173,7 +180,7 @@ export class MapHelperService {
    * @param map :map instance
    * @param data :feature dataset
    */
-  private initializeSourceAndCheck(name: string, map: Map, data: any) {
+  private initializeSourceAndCheck(name: LayerGroupKey, map: Map, data: any) {
     map.getSource(`${name}-Src`) ? map.removeSource(`${name}-Src`) : '';
     map.getLayer(`${name}`) ? map.removeLayer(`${name}`) : '';
     map.getLayer(`${name}-outline`) ? map.removeLayer(`${name}-outline`) : '';
@@ -185,7 +192,7 @@ export class MapHelperService {
     });
   }
 
-  private addMapEvents(map: Map, name: string, hoveredID: undefined | number) {
+  private addMapEvents(map: Map, name: LayerGroupKey, hoveredID: undefined | number) {
     map.on('click', name, (e: any) => {
       this.MapSelectedObject.next(e.features[0].properties.gisID);
     });
@@ -212,5 +219,52 @@ export class MapHelperService {
         hoveredID = undefined;
       }
     });
+  }
+
+  public onToggleLayer(map: Map, name: LayerGroupKey) {
+    const currentlyVisiblie = map.getLayoutProperty(name, 'visibility') === 'none' ? false : true;
+    if (name === 'areas') {
+      currentlyVisiblie
+        ? map.setLayoutProperty('areas', 'visibility', 'none')
+        : map.setLayoutProperty('areas', 'visibility', 'visible');
+
+      currentlyVisiblie
+        ? map.setLayoutProperty('areas-outline', 'visibility', 'none')
+        : map.setLayoutProperty('areas-outline', 'visibility', 'visible');
+
+      map.setLayoutProperty('places', 'visibility', 'none');
+      map.setLayoutProperty('places-label', 'visibility', 'none');
+
+      map.setLayoutProperty('paths', 'visibility', 'none');
+      map.setLayoutProperty('paths-pseudo', 'visibility', 'none');
+    } else if (name === 'places') {
+      currentlyVisiblie
+        ? map.setLayoutProperty('places', 'visibility', 'none')
+        : map.setLayoutProperty('places', 'visibility', 'visible');
+
+      currentlyVisiblie
+        ? map.setLayoutProperty('places-label', 'visibility', 'none')
+        : map.setLayoutProperty('places-label', 'visibility', 'visible');
+
+      map.setLayoutProperty('areas', 'visibility', 'none');
+      map.setLayoutProperty('areas-outline', 'visibility', 'none');
+
+      map.setLayoutProperty('paths', 'visibility', 'none');
+      map.setLayoutProperty('paths-pseudo', 'visibility', 'none');
+    } else if (name === 'paths') {
+      currentlyVisiblie
+        ? map.setLayoutProperty('paths', 'visibility', 'none')
+        : map.setLayoutProperty('paths', 'visibility', 'visible');
+
+      currentlyVisiblie
+        ? map.setLayoutProperty('paths-pseudo', 'visibility', 'none')
+        : map.setLayoutProperty('paths-pseudo', 'visibility', 'visible');
+
+      map.setLayoutProperty('areas', 'visibility', 'none');
+      map.setLayoutProperty('areas-outline', 'visibility', 'none');
+
+      map.setLayoutProperty('places', 'visibility', 'none');
+      map.setLayoutProperty('places-label', 'visibility', 'none');
+    }
   }
 }

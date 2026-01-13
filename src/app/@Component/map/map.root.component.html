@@ -5,12 +5,48 @@
     <search-input (selectedGISID)="selectGISFeature($event)"></search-input>
   </div>
   <div class="user-controls-container">
-    <button class="secondary-btn">paths</button>
-    <button class="secondary-btn">areas</button>
-    <button class="secondary-btn">places</button>
-    <button class="secondary-btn">discuss</button>
-    <button class="secondary-btn">about</button>
-    <button class="secondary-btn">donate</button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'paths'"
+      class="secondary-btn"
+      (click)="toggleLayers('paths'); toggleNavbarActiveButton('paths')"
+    >
+      paths
+    </button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'areas'"
+      class="secondary-btn"
+      (click)="toggleLayers('areas'); toggleNavbarActiveButton('areas')"
+    >
+      areas
+    </button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'places'"
+      class="secondary-btn"
+      (click)="toggleLayers('places'); toggleNavbarActiveButton('places')"
+    >
+      places
+    </button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'discuss'"
+      class="secondary-btn"
+      (click)="toggleNavbarActiveButton('discuss')"
+    >
+      discuss
+    </button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'about'"
+      class="secondary-btn"
+      (click)="toggleNavbarActiveButton('about')"
+    >
+      about
+    </button>
+    <button
+      [class.active-button]="selectedNavbarControl() == 'donate'"
+      class="secondary-btn"
+      (click)="toggleNavbarActiveButton('donate')"
+    >
+      donate
+    </button>
   </div>
 </div>
 

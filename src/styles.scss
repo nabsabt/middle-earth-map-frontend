@@ -22,9 +22,24 @@ body {
 
 :root {
   --mobile-breakpoint: 768px;
+  --primary-green: #1e3c2e;
+  --primary-green-hovered: #2e5c46;
+  --primary-clicked: #ffc226;
+  --primary-text: #ffc226;
+  --primary-text-clicked: #1e3c2e;
+
+  --secondary: #eddcb7;
+  --secondary-hovered: #d7c08f;
+  --secondary-clicked: #635639;
+  --black: #202020;
+  --white: #f5f5f5;
+  --light-grey: #cdc9c9;
+  --light-grey-hovered: #9f9f9f;
+  --dark-brown: #3d1811;
 }
 
 .secondary-btn {
+  transition: 300ms;
   height: 25px;
   width: auto;
   display: inline-flex;
@@ -35,8 +50,8 @@ body {
   border-radius: 999px;
   border: none;
 
-  background-color: #eddcb7; // default bg
-  color: #202020; // default text
+  background-color: var(--secondary); // default bg
+  color: var(--black); // default text
 
   font-family: inherit;
   font-size: 1rem;
@@ -47,20 +62,23 @@ body {
   cursor: pointer;
   user-select: none;
 
-  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease,
+  transition: var(--secondary) 160ms ease, color 160ms ease, box-shadow 160ms ease,
     transform 80ms ease;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   &:hover {
-    background-color: #d7c08f; // hover bg
-    color: #202020;
+    transition: 300ms;
+    background-color: var(--secondary-hovered); // hover bg
+    color: var(--black);
   }
 
   &:active,
   &.active {
-    background-color: #635639; // clicked bg
-    color: #f5f5f5;
+    transition: 300ms;
+
+    background-color: var(--secondary-clicked); // clicked bg
+    color: var(--white);
 
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -70,13 +88,6 @@ body {
 .primary-btn {
   height: 25px;
   width: auto;
-  /* --- tweakables --- */
-  --bg-default: #2f4f3a;
-  --bg-hover: #3f6b4c;
-  --bg-active: #ffc933;
-
-  --text-gold: #f2c94c;
-  --text-active: #2f4f3a;
 
   /* outer shadow (keep same vibe as secondary) */
   --outer-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
@@ -92,8 +103,8 @@ body {
   border-radius: 999px;
   border: none;
 
-  background-color: var(--bg-default);
-  color: var(--text-gold);
+  background-color: var(--primary-green);
+  color: var(--primary-text);
 
   font-family: inherit;
   font-size: 1rem;
@@ -110,18 +121,17 @@ body {
   /* text glow */
   text-shadow: var(--text-glow);
 
-  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease,
+  transition: var(--primary-green) 160ms ease, color 160ms ease, box-shadow 160ms ease,
     transform 80ms ease, text-shadow 160ms ease;
 
   &:hover {
-    background-color: var(--bg-hover);
-    /* keep glow */
+    background-color: var(--primary-green-hovered);
   }
 
   &:active,
   &.active {
-    background-color: var(--bg-active);
-    color: var(--text-active);
+    background-color: var(--primary-clicked);
+    color: var(--primary-text-clicked);
 
     /* on yellow, glow should be weaker (otherwise it looks fuzzy) */
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.15);

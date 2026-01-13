@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { SearchInputComponent } from '../search-input/search.input.component';
 import { GISObject } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
+import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'map-root',
@@ -23,7 +25,7 @@ import { FeatureCollection } from 'geojson';
   styleUrl: './map.root.component.scss',
   standalone: true,
   providers: [MapHelperService, MapRootService],
-  imports: [FormsModule, SearchInputComponent],
+  imports: [FormsModule, SearchInputComponent, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -38,6 +40,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public isLoading = signal<boolean>(false);
   public map: any;
   public selectedObject: GISObject | undefined;
+
+  public selectedNavbarControl = signal<NavbarControls>(undefined);
 
   public areas = signal<FeatureCollection | undefined>(undefined);
   public paths = signal<FeatureCollection | undefined>(undefined);
@@ -82,9 +86,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.onAddPoint(this.places(), this.map);
           this.mapHelper.onAddPaths(this.paths(), this.map);
 
-          this.mapHelper.MapSelectedObject.asObservable().subscribe((val) => {
-            console.log('new value emitted from service, ', val);
-            val ? this.selectGISFeature(val) : '';
+          this.mapHelper.MapSelectedObject.asObservable().subscribe((gisid) => {
+            gisid ? this.selectGISFeature(gisid) : '';
           });
           this.setLoader();
         },
@@ -97,6 +100,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public selectGISFeature(gisID: number) {
+    console.log('kiválasztva, ', gisID);
     this.setLoader();
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
@@ -109,10 +113,6 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
   }
-  ngOnDestroy(): void {
-    this.getObjectSub?.unsubscribe();
-    this.getGeoJSONsSub?.unsubscribe();
-  }
 
   private setLoader() {
     this.isLoading()
@@ -120,5 +120,20 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isLoading.set(false);
         }, 800)
       : this.isLoading.set(true);
+  }
+
+  public toggleLayers(typeName: LayerGroupKey) {
+    this.mapHelper.onToggleLayer(this.map, typeName);
+  }
+
+  public toggleNavbarActiveButton(button: NavbarControls) {
+    this.selectedNavbarControl() === button
+      ? this.selectedNavbarControl.set(undefined)
+      : this.selectedNavbarControl.set(button);
+  }
+
+  ngOnDestroy(): void {
+    this.getObjectSub?.unsubscribe();
+    this.getGeoJSONsSub?.unsubscribe();
   }
 }
