@@ -85,6 +85,33 @@ body {
   }
 }
 
+.control-panel-button {
+  @extend .secondary-btn;
+  height: 20px;
+}
+
+.control-panel-button-pill {
+  @extend .secondary-btn;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.control-panel-button-pill-large {
+  @extend .control-panel-button-pill;
+  height: 40px;
+  width: 40px;
+  img {
+    width: 32px;
+    height: 32px;
+  }
+}
 .primary-btn {
   height: 25px;
   width: auto;

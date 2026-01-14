@@ -86,7 +86,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.onAddPoint(this.places(), this.map);
           this.mapHelper.onAddPaths(this.paths(), this.map);
 
-          this.mapHelper.MapSelectedObject.asObservable().subscribe((gisid) => {
+          this.mapHelper.$mapSelectedObjectID.subscribe((gisid) => {
             gisid ? this.selectGISFeature(gisid, true) : '';
           });
           this.setLoader();
@@ -106,7 +106,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedObject.set(res);
         if (!isSelectedFromMap) {
           const layertype: LayerGroupKey = this.mapHelper.calcLayerGroupKeyFromGisID(gisID);
-          this.mapHelper.singleGisObjectSelected(this.map, gisID, this[layertype]());
+          this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
         }
 
         this.setLoader();

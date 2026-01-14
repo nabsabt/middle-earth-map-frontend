@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { LngLatLike, Map } from 'maplibre-gl';
 import { isPlatformBrowser } from '@angular/common';
 import {
@@ -16,7 +16,10 @@ import * as turf from '@turf/turf';
 @Injectable()
 export class MapHelperService {
   private mapInstance: Map | null = null;
-  public MapSelectedObject = new BehaviorSubject<undefined | number>(undefined);
+  public MapSelectedObjectID = new BehaviorSubject<undefined | number>(undefined);
+  public $mapSelectedObjectID = this.MapSelectedObjectID.asObservable();
+
+  private selected: { layer: LayerGroupKey; id: number } | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
@@ -114,6 +117,11 @@ export class MapHelperService {
         'text-size': 20,
         'text-field': ['get', 'name_EN'],
         'text-justify': 'center',
+        'symbol-placement': 'point',
+        'symbol-spacing': 2000,
+        'text-allow-overlap': false,
+        'text-ignore-placement': false,
+        'text-padding': 4,
       },
       paint: AREAS_LABEL_PAINT_VALUES,
       minzoom: 5.5,
@@ -276,25 +284,49 @@ export class MapHelperService {
   }
 
   private singleGisObjectClicked(map: Map, gisID: number, data: any) {
-    this.MapSelectedObject.next(gisID);
+    this.MapSelectedObjectID.next(gisID);
     const layertype = this.calcLayerGroupKeyFromGisID(gisID);
     const feature = data.features.find((f: any) => f.id === gisID);
 
     this.onToggleLayer(map, layertype, true);
+    this.manageSelectedObjectState(map, gisID, this.calcLayerGroupKeyFromGisID(gisID));
     map.flyTo({
       center: this.flyToValues(layertype, feature.geometry.coordinates[0]).coords,
       zoom: this.flyToValues(layertype, feature.geometry.coordinates[0]).zoomLvl,
     });
   }
 
-  public singleGisObjectSelected(map: Map, gisID: number, data: any) {
+  public singleGisObjectSelected(map: Map, gisID: number, name: LayerGroupKey, data: any) {
     const layertype = this.calcLayerGroupKeyFromGisID(gisID);
     const feature = data.features.find((f: any) => f.id === gisID);
     this.onToggleLayer(map, layertype, true);
+
+    this.manageSelectedObjectState(map, gisID, name);
     map.flyTo({
       center: this.flyToValues(layertype, feature.geometry.coordinates[0]).coords,
       zoom: this.flyToValues(layertype, feature.geometry.coordinates[0]).zoomLvl,
     });
+  }
+
+  private manageSelectedObjectState(map: Map, gisID: number, name: LayerGroupKey) {
+    const next = { layer: name, id: gisID };
+
+    // 1) unset previous selection (if any)
+    if (this.selected) {
+      const prevSource = `${this.selected.layer}-Src`;
+      if (map.getSource(prevSource)) {
+        map.setFeatureState({ source: prevSource, id: this.selected.id }, { selected: false });
+      }
+    }
+
+    // 2) set current selection
+    const nextSource = `${name}-Src`;
+    if (!map.getSource(nextSource)) return;
+
+    map.setFeatureState({ source: nextSource, id: gisID }, { selected: true });
+
+    // 3) remember
+    this.selected = next;
   }
 
   public calcLayerGroupKeyFromGisID(gisID: number): LayerGroupKey {
