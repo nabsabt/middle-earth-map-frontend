@@ -12,6 +12,13 @@ export const AREAS_OUTLINE_PAINT_VALUES = {
   'line-width': ['case', ['boolean', ['feature-state', 'hovered'], false], 4, 1.5],
 } as any;
 
+export const AREAS_LABEL_PAINT_VALUES = {
+  'text-color': ['case', ['boolean', ['feature-state', 'hovered'], false], '#5151f5', '#e9e9f7'],
+  'text-halo-color': 'black',
+  'text-halo-width': 2,
+  'text-halo-blur': 0.5,
+} as any;
+
 export const PLACES_LABEL_PAINT_VALUES = {
   'text-color': ['case', ['boolean', ['feature-state', 'hovered'], false], '#5151f5', '#e9e9f7'],
   'text-halo-color': 'black',

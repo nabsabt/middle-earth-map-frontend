@@ -1,5 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Map } from 'maplibre-gl';
+import { LngLatLike, Map } from 'maplibre-gl';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AREAS_PAINT_VALUES,
@@ -7,9 +7,11 @@ import {
   PLACES_LABEL_PAINT_VALUES,
   PATHS_PAINT_VALUES,
   PATHS_PSEUDOLINE_PAINT_VALUES,
+  AREAS_LABEL_PAINT_VALUES,
 } from '../@Constant/map.style.values';
 import { BehaviorSubject } from 'rxjs';
 import { LayerGroupKey } from '../@Interface/maproot.interface';
+import * as turf from '@turf/turf';
 
 @Injectable()
 export class MapHelperService {
@@ -104,9 +106,24 @@ export class MapHelperService {
       paint: AREAS_OUTLINE_PAINT_VALUES,
     });
 
-    this.addMapEvents(map, 'areas', hoveredID);
+    map.addLayer({
+      id: 'areas-label',
+      source: 'areas-Src',
+      type: 'symbol',
+      layout: {
+        'text-size': 20,
+        'text-field': ['get', 'name_EN'],
+        'text-justify': 'center',
+      },
+      paint: AREAS_LABEL_PAINT_VALUES,
+      minzoom: 5.5,
+      maxzoom: 9,
+    });
+
+    this.addMapEvents(map, 'areas', areas, hoveredID);
     map.setLayoutProperty('areas', 'visibility', 'none');
     map.setLayoutProperty('areas-outline', 'visibility', 'none');
+    map.setLayoutProperty('areas-label', 'visibility', 'none');
   }
 
   public async onAddPoint(points: any, map: Map) {
@@ -140,11 +157,11 @@ export class MapHelperService {
         'text-offset': [0, 2],
       },
       paint: PLACES_LABEL_PAINT_VALUES,
-      minzoom: 6,
+      minzoom: 5.5,
       maxzoom: 9,
     });
 
-    this.addMapEvents(map, 'places', hoveredID);
+    this.addMapEvents(map, 'places', points, hoveredID);
     map.setLayoutProperty('places', 'visibility', 'none');
     map.setLayoutProperty('places-label', 'visibility', 'none');
   }
@@ -169,7 +186,7 @@ export class MapHelperService {
       paint: PATHS_PSEUDOLINE_PAINT_VALUES,
     });
 
-    this.addMapEvents(map, 'paths', hoveredID);
+    this.addMapEvents(map, 'paths', paths, hoveredID);
     map.setLayoutProperty('paths', 'visibility', 'none');
     map.setLayoutProperty('paths-pseudo', 'visibility', 'none');
   }
@@ -192,9 +209,46 @@ export class MapHelperService {
     });
   }
 
-  private addMapEvents(map: Map, name: LayerGroupKey, hoveredID: undefined | number) {
+  private flyToValues(
+    name: LayerGroupKey,
+    vertices: Array<[any][any]>
+  ): { coords: LngLatLike; zoomLvl: number } {
+    const flyTo: { coords: LngLatLike; zoomLvl: number } = {
+      coords: [0, 0] as LngLatLike,
+      zoomLvl: 5,
+    };
+    if (name === 'places') {
+      flyTo.coords = vertices as LngLatLike;
+      flyTo.zoomLvl = 8;
+      return flyTo;
+    }
+    if (name === 'paths') {
+      flyTo.coords = vertices[vertices.length / 2] as LngLatLike;
+      flyTo.zoomLvl = 6;
+      return flyTo;
+    }
+    const shape = turf.polygon(vertices);
+    const center = turf.centerOfMass(shape);
+    const area = turf.area(shape);
+    let zoomLvl: number = 0;
+    /**
+     * zoom level clusters, calculated from polygon area
+     */
+    if (area <= 9000000000) {
+      zoomLvl = 8;
+    } else {
+      zoomLvl = 6;
+    }
+
+    const longlat: LngLatLike = center.geometry.coordinates as LngLatLike;
+    flyTo.coords = longlat;
+    flyTo.zoomLvl = zoomLvl;
+    return flyTo;
+  }
+
+  private addMapEvents(map: Map, name: LayerGroupKey, data: any, hoveredID: undefined | number) {
     map.on('click', name, (e: any) => {
-      this.MapSelectedObject.next(e.features[0].properties.gisID);
+      this.singleGisObjectClicked(map, e.features[0].properties.gisID, data);
     });
 
     map.on('mousemove', name, (e: any) => {
@@ -221,8 +275,52 @@ export class MapHelperService {
     });
   }
 
-  public onToggleLayer(map: Map, name: LayerGroupKey) {
+  private singleGisObjectClicked(map: Map, gisID: number, data: any) {
+    this.MapSelectedObject.next(gisID);
+    const layertype = this.calcLayerGroupKeyFromGisID(gisID);
+    const feature = data.features.find((f: any) => f.id === gisID);
+
+    this.onToggleLayer(map, layertype, true);
+    map.flyTo({
+      center: this.flyToValues(layertype, feature.geometry.coordinates[0]).coords,
+      zoom: this.flyToValues(layertype, feature.geometry.coordinates[0]).zoomLvl,
+    });
+  }
+
+  public singleGisObjectSelected(map: Map, gisID: number, data: any) {
+    const layertype = this.calcLayerGroupKeyFromGisID(gisID);
+    const feature = data.features.find((f: any) => f.id === gisID);
+    this.onToggleLayer(map, layertype, true);
+    map.flyTo({
+      center: this.flyToValues(layertype, feature.geometry.coordinates[0]).coords,
+      zoom: this.flyToValues(layertype, feature.geometry.coordinates[0]).zoomLvl,
+    });
+  }
+
+  public calcLayerGroupKeyFromGisID(gisID: number): LayerGroupKey {
+    let layerType: LayerGroupKey;
+    switch (gisID.toString().split('')[0]) {
+      case '1':
+        layerType = 'places';
+        break;
+      case '2':
+        layerType = 'paths';
+        break;
+      case '3':
+        layerType = 'areas';
+        break;
+      default:
+        layerType = 'areas';
+        break;
+    }
+    return layerType;
+  }
+
+  public onToggleLayer(map: Map, name: LayerGroupKey, turnOn?: boolean) {
     const currentlyVisiblie = map.getLayoutProperty(name, 'visibility') === 'none' ? false : true;
+
+    if (turnOn && currentlyVisiblie) return;
+
     if (name === 'areas') {
       currentlyVisiblie
         ? map.setLayoutProperty('areas', 'visibility', 'none')
@@ -231,6 +329,10 @@ export class MapHelperService {
       currentlyVisiblie
         ? map.setLayoutProperty('areas-outline', 'visibility', 'none')
         : map.setLayoutProperty('areas-outline', 'visibility', 'visible');
+
+      currentlyVisiblie
+        ? map.setLayoutProperty('areas-label', 'visibility', 'none')
+        : map.setLayoutProperty('areas-label', 'visibility', 'visible');
 
       map.setLayoutProperty('places', 'visibility', 'none');
       map.setLayoutProperty('places-label', 'visibility', 'none');
@@ -248,6 +350,7 @@ export class MapHelperService {
 
       map.setLayoutProperty('areas', 'visibility', 'none');
       map.setLayoutProperty('areas-outline', 'visibility', 'none');
+      map.setLayoutProperty('areas-label', 'visibility', 'none');
 
       map.setLayoutProperty('paths', 'visibility', 'none');
       map.setLayoutProperty('paths-pseudo', 'visibility', 'none');
@@ -262,6 +365,7 @@ export class MapHelperService {
 
       map.setLayoutProperty('areas', 'visibility', 'none');
       map.setLayoutProperty('areas-outline', 'visibility', 'none');
+      map.setLayoutProperty('areas-label', 'visibility', 'none');
 
       map.setLayoutProperty('places', 'visibility', 'none');
       map.setLayoutProperty('places-label', 'visibility', 'none');

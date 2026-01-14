@@ -39,7 +39,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public isLoading = signal<boolean>(false);
   public map: any;
-  public selectedObject: GISObject | undefined;
+  public selectedObject = signal<GISObject | undefined>(undefined);
 
   public selectedNavbarControl = signal<NavbarControls>(undefined);
 
@@ -87,7 +87,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.onAddPaths(this.paths(), this.map);
 
           this.mapHelper.MapSelectedObject.asObservable().subscribe((gisid) => {
-            gisid ? this.selectGISFeature(gisid) : '';
+            gisid ? this.selectGISFeature(gisid, true) : '';
           });
           this.setLoader();
         },
@@ -99,12 +99,16 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  public selectGISFeature(gisID: number) {
-    console.log('kiválasztva, ', gisID);
+  public selectGISFeature(gisID: number, isSelectedFromMap: boolean) {
     this.setLoader();
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
-        this.selectedObject = res;
+        this.selectedObject.set(res);
+        if (!isSelectedFromMap) {
+          const layertype: LayerGroupKey = this.mapHelper.calcLayerGroupKeyFromGisID(gisID);
+          this.mapHelper.singleGisObjectSelected(this.map, gisID, this[layertype]());
+        }
+
         this.setLoader();
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
