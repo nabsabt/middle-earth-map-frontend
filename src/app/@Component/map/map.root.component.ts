@@ -18,6 +18,7 @@ import { GISObject } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'map-root',
@@ -25,7 +26,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './map.root.component.scss',
   standalone: true,
   providers: [MapHelperService, MapRootService],
-  imports: [FormsModule, SearchInputComponent, CommonModule],
+  imports: [FormsModule, SearchInputComponent, CommonModule, LoadingComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -37,7 +38,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapHelper = inject(MapHelperService);
   private mapService = inject(MapRootService);
 
-  public isLoading = signal<boolean>(false);
+  public isLoading = signal<{ loading: boolean; initial: boolean }>({
+    loading: false,
+    initial: false,
+  });
   public map: any;
   public selectedObject = signal<GISObject | undefined>(undefined);
 
@@ -46,6 +50,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public areas = signal<FeatureCollection | undefined>(undefined);
   public paths = signal<FeatureCollection | undefined>(undefined);
   public places = signal<FeatureCollection | undefined>(undefined);
+
+  public bearInDegree = signal<number>(0);
 
   constructor() {
     this.title.setTitle('Map of Middle-Earth');
@@ -68,10 +74,13 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * Map initialized, loading resources->
      */
+    this.showLoader(true);
     this.map?.on('load', async () => {
       this.mapHelper.addTileLayers(this.map);
+      this.mapHelper.$mapBearingValue.subscribe((degree) => {
+        this.bearInDegree.set(degree);
+      });
 
-      this.setLoader();
       this.getGeoJSONsSub = this.mapService.getGeoJSONS().subscribe({
         next: (res: {
           areas: FeatureCollection;
@@ -89,10 +98,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.$mapSelectedObjectID.subscribe((gisid) => {
             gisid ? this.selectGISFeature(gisid, true) : '';
           });
-          this.setLoader();
+          this.hideLoader();
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
-          this.setLoader();
+          this.hideLoader();
           return error;
         },
       });
@@ -100,7 +109,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public selectGISFeature(gisID: number, isSelectedFromMap: boolean) {
-    this.setLoader();
+    this.showLoader(false);
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
         this.selectedObject.set(res);
@@ -109,21 +118,25 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
         }
 
-        this.setLoader();
+        this.hideLoader();
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
-        this.setLoader();
+        this.hideLoader();
         return error;
       },
     });
   }
 
-  private setLoader() {
-    this.isLoading()
-      ? setTimeout(() => {
-          this.isLoading.set(false);
-        }, 800)
-      : this.isLoading.set(true);
+  private showLoader(isInitial: boolean) {
+    this.isLoading.set({ loading: true, initial: isInitial });
+  }
+
+  private hideLoader() {
+    const delay = this.isLoading().initial ? 3000 : 800;
+
+    setTimeout(() => {
+      this.isLoading.set({ loading: false, initial: false });
+    }, delay);
   }
 
   public toggleLayers(typeName: LayerGroupKey) {
@@ -134,6 +147,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedNavbarControl() === button
       ? this.selectedNavbarControl.set(undefined)
       : this.selectedNavbarControl.set(button);
+  }
+
+  public onSetPitchToDefault() {
+    this.mapHelper.setPitchToDefault(this.map);
   }
 
   ngOnDestroy(): void {

@@ -12,12 +12,16 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { LayerGroupKey } from '../@Interface/maproot.interface';
 import * as turf from '@turf/turf';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MapHelperService {
   private mapInstance: Map | null = null;
-  public MapSelectedObjectID = new BehaviorSubject<undefined | number>(undefined);
+  private MapSelectedObjectID = new BehaviorSubject<undefined | number>(undefined);
   public $mapSelectedObjectID = this.MapSelectedObjectID.asObservable();
+
+  private mapBearingValue = new BehaviorSubject<number>(0);
+  public $mapBearingValue = this.mapBearingValue.asObservable();
 
   private selected: { layer: LayerGroupKey; id: number } | null = null;
 
@@ -43,13 +47,13 @@ export class MapHelperService {
       attributionControl: false,
     });
     this.mapInstance = map;
+    map.setMinPitch(0);
+    map.setMaxPitch(0);
     return map;
   }
 
   public addTileLayers(map: Map) {
     map.getSource('basemapSrc') ? map.removeSource('basemapSrc') : '';
-    map.getSource('elevationmapSrc') ? map.removeSource('elevationmapSrc') : '';
-    map.getLayer('elevationmap') ? map.removeLayer('elevationmap') : '';
 
     map.addSource('basemapSrc', {
       type: 'raster',
@@ -57,21 +61,9 @@ export class MapHelperService {
        * vsc-ben futtatva (ha tileserver fut): http://localhost:8080/data/basemap/{z}/{x}/{y}.png
        * docker-ben futtatva: '/tiles/basemap/data/basemap/{z}/{x}/{y}.png'
        */
-      tiles: [`http://localhost:8080/data/basemap/{z}/{x}/{y}.png?v=${new Date().getTime()}`],
+      //tiles: [`http://localhost:8080/data/basemap/{z}/{x}/{y}.png?v=${new Date().getTime()}`],
       //tiles: ['/tiles/basemap/data/basemap/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      minzoom: 5,
-      maxzoom: 10,
-    });
-
-    map.addSource('elevationmapSrc', {
-      type: 'raster',
-      /**
-       * vsc-ben futtatva (ha tileserver fut): http://localhost:8081/data/elevationMap/{z}/{x}/{y}.png
-       * docker-ben futtatva: '/tiles/elevationMap/data/elevationMap/{z}/{x}/{y}.png'
-       */
-      tiles: [`http://localhost:8081/data/elevationMap/{z}/{x}/{y}.png?v=${new Date().getTime()}`],
-      //tiles: ['/tiles/elevationMap/data/elevationMap/{z}/{x}/{y}.png'],
+      tiles: [environment.tileserver_BaseMap],
       tileSize: 256,
       minzoom: 5,
       maxzoom: 10,
@@ -82,12 +74,6 @@ export class MapHelperService {
       type: 'raster',
       source: 'basemapSrc',
     });
-
-    /* map.addLayer({
-      id: 'elevationmap',
-      type: 'raster',
-      source: 'elevationmapSrc',
-    }); */
   }
 
   public onAddAreas(areas: any, map: Map) {
@@ -264,7 +250,7 @@ export class MapHelperService {
       if (!f) return;
 
       const id = f.id;
-      if (id == null) return; // allows id=0 too
+      if (id == null) return;
 
       if (hoveredID != null && hoveredID !== id) {
         map.setFeatureState({ source: `${name}-Src`, id: hoveredID }, { hovered: false });
@@ -280,6 +266,10 @@ export class MapHelperService {
 
         hoveredID = undefined;
       }
+    });
+
+    map.on('pitch', () => {
+      this.mapBearingValue.next(map.getBearing());
     });
   }
 
@@ -402,5 +392,13 @@ export class MapHelperService {
       map.setLayoutProperty('places', 'visibility', 'none');
       map.setLayoutProperty('places-label', 'visibility', 'none');
     }
+  }
+
+  public setPitchToDefault(map: Map) {
+    map.easeTo({
+      bearing: 0,
+      duration: 500,
+    });
+    this.mapBearingValue.next(0);
   }
 }

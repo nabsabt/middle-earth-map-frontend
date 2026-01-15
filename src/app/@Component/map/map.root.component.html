@@ -60,7 +60,13 @@
     <button class="control-panel-button">metric</button>
   </div>
   <div class="control-panel-group map-controls">
-    <button class="control-panel-button-pill"><img src="assets/icons/compass_bw.svg" /></button>
+    <!--Pitch setting-->
+    <button (click)="onSetPitchToDefault()" class="control-panel-button-pill">
+      <img
+        src="assets/icons/compass_bw.svg"
+        [ngStyle]="{ transform: `rotate(${bearInDegree()}deg)` }"
+      />
+    </button>
 
     <button class="control-panel-button-pill">
       <img src="assets/icons/layer-black_brown.svg" />
@@ -69,8 +75,6 @@
   </div>
 </div>
 
-@if(isLoading()){
-<div class="loading-spinner">
-  <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." />
-</div>
+@if(isLoading().loading){
+<loading [isInitialLoad]="isLoading().initial"></loading>
 }
