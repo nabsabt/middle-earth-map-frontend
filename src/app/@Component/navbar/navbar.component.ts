@@ -1,13 +1,14 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
 import { SearchInputComponent } from '../search-input/search.input.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   standalone: true,
-  imports: [SearchInputComponent],
+  imports: [SearchInputComponent, TranslateModule],
   providers: [],
 })
 export class NavbarComponent implements OnInit {

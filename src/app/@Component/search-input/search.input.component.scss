@@ -24,6 +24,9 @@
 
   /* smooth animation */
   transition: transform 140ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  button {
+    margin: 0 1rem;
+  }
 }
 
 .me-search__input {
@@ -81,7 +84,7 @@
 }
 
 .me-clear__btn--clear {
-  right: 1rem;
+  right: 3rem;
   font-size: 16px;
   color: rgba(32, 32, 32, 0.65);
 }

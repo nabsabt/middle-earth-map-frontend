@@ -12,7 +12,7 @@
     </button>
   </div>
   <div class="control-panel-group metric">
-    <button class="control-panel-button">metric</button>
+    <button (click)="onChangeUnits()" class="control-panel-button">{{ units() }}</button>
   </div>
   <div class="control-panel-group map-controls">
     <!--Pitch setting-->
@@ -23,10 +23,10 @@
       />
     </button>
 
-    <button class="control-panel-button-pill">
+    <!--  <button class="control-panel-button-pill">
       <img src="assets/icons/layer-black_brown.svg" />
-    </button>
-    <button class="control-panel-button-pill">3D</button>
+    </button> -->
+    <!-- <button class="control-panel-button-pill">3D</button> -->
   </div>
 </div>
 

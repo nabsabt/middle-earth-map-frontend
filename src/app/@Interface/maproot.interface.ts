@@ -36,3 +36,5 @@ export type NavbarControls =
   | 'about'
   | 'donate'
   | undefined;
+
+export type Units = 'metric' | 'imperial';

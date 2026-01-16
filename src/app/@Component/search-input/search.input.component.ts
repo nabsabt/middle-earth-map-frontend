@@ -6,6 +6,7 @@ import {
   inject,
   model,
   OnDestroy,
+  OnInit,
   Output,
   signal,
 } from '@angular/core';
@@ -14,17 +15,24 @@ import { Subscription } from 'rxjs';
 import { MapRootService } from '../../@Service/map.root.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../../@Service/alert.service';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'search-input',
   templateUrl: './search.input.component.html',
   styleUrl: './search.input.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   providers: [MapRootService, AlertService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchInputComponent implements OnDestroy {
+export class SearchInputComponent implements OnInit, OnDestroy {
+  public changeToLangValue = signal<string>('en');
+
+  ngOnInit(): void {
+    this.changeToLangValue.set(this.translateService.currentLang === 'en' ? 'hu' : 'en');
+  }
+
   @Output() selectedGISID = new EventEmitter<number>();
   private getSearchResultSub: Subscription;
 
@@ -36,6 +44,10 @@ export class SearchInputComponent implements OnDestroy {
 
   public searchResults = signal<Array<SearchResults>>([]);
 
+  constructor(private translateService: TranslateService) {
+    translateService.setDefaultLang('en');
+    translateService.use('en');
+  }
   onSearch() {
     if (this.value() === '') return;
 
@@ -60,6 +72,14 @@ export class SearchInputComponent implements OnDestroy {
     this.selectedGISID.emit(gisID);
     this.searchResults.set([]);
     this.value.set('');
+  }
+
+  changeLanguage() {
+    const nextLang = this.translateService.currentLang === 'en' ? 'hu' : 'en';
+
+    this.translateService.use(nextLang);
+    const nextButtonLabel = nextLang === 'en' ? 'hu' : 'en';
+    this.changeToLangValue.set(nextButtonLabel);
   }
 
   ngOnDestroy(): void {

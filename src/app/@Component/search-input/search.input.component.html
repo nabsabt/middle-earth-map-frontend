@@ -4,7 +4,7 @@
     <input
       class="me-search__input"
       type="text"
-      placeholder="SEARCH PLACES..."
+      placeholder="{{ 'SEARCHING_PLACES' | translate }}"
       (keyup)="onSearch()"
       [value]="value()"
       (input)="value.set($any($event.target).value)"
@@ -22,6 +22,9 @@
       X
     </button>
     }
+    <button (click)="changeLanguage()" class="control-panel-button-pill">
+      {{ changeToLangValue() }}
+    </button>
   </div>
 
   @if(searchResults().length > 0 && value().length !== 0){

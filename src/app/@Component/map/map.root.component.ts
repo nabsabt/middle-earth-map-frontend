@@ -13,13 +13,14 @@ import { MapRootService } from '../../@Service/map.root.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { GISObject } from '../../@Interface/maproot.interface';
+import { GISObject, Units } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../@Service/loader.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'map-root',
@@ -27,7 +28,14 @@ import { LoaderService } from '../../@Service/loader.service';
   styleUrl: './map.root.component.scss',
   standalone: true,
   providers: [MapHelperService, MapRootService],
-  imports: [NavbarComponent, FormsModule, CommonModule, LoadingComponent, NavbarComponent],
+  imports: [
+    NavbarComponent,
+    FormsModule,
+    CommonModule,
+    LoadingComponent,
+    NavbarComponent,
+    TranslateModule,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -52,6 +60,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public places = signal<FeatureCollection | undefined>(undefined);
 
   public bearInDegree = signal<number>(0);
+  public units = signal<Units>('metric');
 
   constructor() {
     this.title.setTitle('Map of Middle-Earth');
@@ -142,6 +151,9 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapHelper.setPitchToDefault(this.map);
   }
 
+  public onChangeUnits() {
+    this.units() === 'metric' ? this.units.set('imperial') : this.units.set('metric');
+  }
   ngOnDestroy(): void {
     this.getObjectSub?.unsubscribe();
     this.getGeoJSONsSub?.unsubscribe();
