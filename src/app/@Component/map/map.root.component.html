@@ -1,54 +1,9 @@
 <div #map id="map" class="map-content"></div>
 
-<div class="navbar">
-  <div class="searchbar-container">
-    <search-input (selectedGISID)="selectGISFeature($event, false)"></search-input>
-  </div>
-  <div class="user-controls-container">
-    <button
-      [class.active-button]="selectedNavbarControl() == 'paths'"
-      class="secondary-btn"
-      (click)="toggleLayers('paths'); toggleNavbarActiveButton('paths')"
-    >
-      paths
-    </button>
-    <button
-      [class.active-button]="selectedNavbarControl() == 'areas'"
-      class="secondary-btn"
-      (click)="toggleLayers('areas'); toggleNavbarActiveButton('areas')"
-    >
-      areas
-    </button>
-    <button
-      [class.active-button]="selectedNavbarControl() == 'places'"
-      class="secondary-btn"
-      (click)="toggleLayers('places'); toggleNavbarActiveButton('places')"
-    >
-      places
-    </button>
-    <button
-      [class.active-button]="selectedNavbarControl() == 'discuss'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('discuss')"
-    >
-      discuss
-    </button>
-    <button
-      [class.active-button]="selectedNavbarControl() == 'about'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('about')"
-    >
-      about
-    </button>
-    <button
-      [class.active-button]="selectedNavbarControl() == 'donate'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('donate')"
-    >
-      donate
-    </button>
-  </div>
-</div>
+<navbar
+  (selectedObjID)="selectGISFeature($event, false)"
+  (layerToToggle)="toggleLayers($event)"
+></navbar>
 
 <div class="control-panel">
   <div class="control-panel-group AI-chat">

@@ -13,12 +13,13 @@ import { MapRootService } from '../../@Service/map.root.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { SearchInputComponent } from '../search-input/search.input.component';
 import { GISObject } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
-import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
+import { LayerGroupKey } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { LoaderService } from '../../@Service/loader.service';
 
 @Component({
   selector: 'map-root',
@@ -26,7 +27,7 @@ import { LoadingComponent } from '../loading/loading.component';
   styleUrl: './map.root.component.scss',
   standalone: true,
   providers: [MapHelperService, MapRootService],
-  imports: [FormsModule, SearchInputComponent, CommonModule, LoadingComponent],
+  imports: [NavbarComponent, FormsModule, CommonModule, LoadingComponent, NavbarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -37,6 +38,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   private meta = inject(Meta);
   private mapHelper = inject(MapHelperService);
   private mapService = inject(MapRootService);
+  private loaderService = inject(LoaderService);
 
   public isLoading = signal<{ loading: boolean; initial: boolean }>({
     loading: false,
@@ -44,8 +46,6 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   });
   public map: any;
   public selectedObject = signal<GISObject | undefined>(undefined);
-
-  public selectedNavbarControl = signal<NavbarControls>(undefined);
 
   public areas = signal<FeatureCollection | undefined>(undefined);
   public paths = signal<FeatureCollection | undefined>(undefined);
@@ -64,6 +64,12 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
       property: 'og:description',
       content: 'Explore locations, routes and regions.',
     });
+
+    this.loaderService.$isLoadingAsObservable.subscribe(
+      (loading: { loading: boolean; initial: boolean }) => {
+        this.isLoading.set(loading);
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -74,7 +80,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * Map initialized, loading resources->
      */
-    this.showLoader(true);
+    this.loaderService.showLoader(true);
     this.map?.on('load', async () => {
       this.mapHelper.addTileLayers(this.map);
       this.mapHelper.$mapBearingValue.subscribe((degree) => {
@@ -98,10 +104,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.$mapSelectedObjectID.subscribe((gisid) => {
             gisid ? this.selectGISFeature(gisid, true) : '';
           });
-          this.hideLoader();
+          this.loaderService.hideLoader();
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
-          this.hideLoader();
+          this.loaderService.hideLoader();
           return error;
         },
       });
@@ -109,7 +115,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public selectGISFeature(gisID: number, isSelectedFromMap: boolean) {
-    this.showLoader(false);
+    this.loaderService.showLoader(false);
+
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
         this.selectedObject.set(res);
@@ -118,35 +125,17 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
         }
 
-        this.hideLoader();
+        this.loaderService.hideLoader();
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
-        this.hideLoader();
+        this.loaderService.hideLoader();
         return error;
       },
     });
   }
 
-  private showLoader(isInitial: boolean) {
-    this.isLoading.set({ loading: true, initial: isInitial });
-  }
-
-  private hideLoader() {
-    const delay = this.isLoading().initial ? 3000 : 800;
-
-    setTimeout(() => {
-      this.isLoading.set({ loading: false, initial: false });
-    }, delay);
-  }
-
   public toggleLayers(typeName: LayerGroupKey) {
     this.mapHelper.onToggleLayer(this.map, typeName);
-  }
-
-  public toggleNavbarActiveButton(button: NavbarControls) {
-    this.selectedNavbarControl() === button
-      ? this.selectedNavbarControl.set(undefined)
-      : this.selectedNavbarControl.set(button);
   }
 
   public onSetPitchToDefault() {
