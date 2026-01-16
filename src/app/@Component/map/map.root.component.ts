@@ -21,6 +21,7 @@ import { LoadingComponent } from '../loading/loading.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../@Service/loader.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { DetailsDialogComponent } from '../details-dialog/details.dialog.component';
 
 @Component({
   selector: 'map-root',
@@ -35,6 +36,7 @@ import { TranslateModule } from '@ngx-translate/core';
     LoadingComponent,
     NavbarComponent,
     TranslateModule,
+    DetailsDialogComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -61,6 +63,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public bearInDegree = signal<number>(0);
   public units = signal<Units>('metric');
+
+  public showDialog = signal<boolean>(false);
 
   constructor() {
     this.title.setTitle('Map of Middle-Earth');
@@ -111,7 +115,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapHelper.onAddPaths(this.paths(), this.map);
 
           this.mapHelper.$mapSelectedObjectID.subscribe((gisid) => {
-            gisid ? this.selectGISFeature(gisid, true) : '';
+            gisid ? this.selectGISFeature(gisid, true) : this.selectedObject.set(undefined);
           });
           this.loaderService.hideLoader();
         },
@@ -129,6 +133,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
         this.selectedObject.set(res);
+        this.showDialog.set(true);
         if (!isSelectedFromMap) {
           const layertype: LayerGroupKey = this.mapHelper.calcLayerGroupKeyFromGisID(gisID);
           this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
@@ -153,6 +158,9 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onChangeUnits() {
     this.units() === 'metric' ? this.units.set('imperial') : this.units.set('metric');
+  }
+  public onDialogClosed() {
+    this.showDialog.set(false);
   }
   ngOnDestroy(): void {
     this.getObjectSub?.unsubscribe();

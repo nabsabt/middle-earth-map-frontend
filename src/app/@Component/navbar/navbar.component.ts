@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, output, Output, signal } from '@angular/core';
 import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
 import { SearchInputComponent } from '../search-input/search.input.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,8 +12,11 @@ import { TranslateModule } from '@ngx-translate/core';
   providers: [],
 })
 export class NavbarComponent implements OnInit {
-  @Output() selectedObjID = new EventEmitter<number>();
-  @Output() layerToToggle = new EventEmitter<LayerGroupKey>();
+  //@Output() selectedObjID = new EventEmitter<number>();
+  //@Output() layerToToggle = new EventEmitter<LayerGroupKey>();
+
+  public selectedObjID = output<number>();
+  public layerToToggle = output<LayerGroupKey>();
 
   public selectedNavbarControl = signal<NavbarControls>(undefined);
 

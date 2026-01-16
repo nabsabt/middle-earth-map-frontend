@@ -1,0 +1,44 @@
+<!--DESKTOP-->
+@if(!isMobile()){
+<div class="dialog-container dialog-container-desktop">
+  <div class="close-action">
+    <button (click)="onCloseDialog()" class="control-panel-button-pill">x</button>
+  </div>
+  <div class="dialog-content">
+    <div class="dialog-title">
+      <h1>{{ selectedObject()?.name?.[lang()] }}</h1>
+      @if(selectedObject()?.length){
+      <h3>
+        {{ selectedObject()?.length?.[unit() === 'metric' ? 'Km': 'Mi'] }}
+        {{ unit() === 'metric' ? 'km' : 'mi' }}
+      </h3>
+      } @if(selectedObject()?.area){
+      <h3>
+        {{ selectedObject()?.area?.[unit() === 'metric' ? 'sqKm': 'sqMi'] }}
+        {{ unit() === 'metric' ? 'km' : 'mi' }}<sup>2</sup>
+      </h3>
+
+      }
+    </div>
+  </div>
+</div>
+}
+
+<!--MOBILE-->
+@if(isMobile()){
+<!--  <div #backdrop class="backdrop" (click)="onBackdropClick()"></div>
+
+<div #sheet class="dialog-container dialog-container-mobile">
+  <div class="header" (mousedown)="startDrag($event)" (touchstart)="startDrag($event)">
+    <div (click)="onCloseOrOpen()" class="handle"></div>
+    <div class="title">{{ title() }}</div>
+  </div>
+
+  <div class="content">
+    <ng-content>
+      <h4>{{ subTitle() }}</h4>
+      <p>{{ content() }}</p>
+    </ng-content>
+  </div>
+</div>  -->
+}

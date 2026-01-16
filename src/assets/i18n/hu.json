@@ -9,6 +9,6 @@
   "ABOUT": "infó",
   "DONATE": "adomány",
 
-  "UNITS_METRIC": "metrikus",
-  "UNITS_IMPERIAL": "birodalmi"
+  "METRIC": "metrikus",
+  "IMPERIAL": "birodalmi"
 }

@@ -12,8 +12,11 @@
     </button>
   </div>
   <div class="control-panel-group metric">
-    <button (click)="onChangeUnits()" class="control-panel-button">{{ units() }}</button>
+    <button (click)="onChangeUnits()" class="control-panel-button">
+      {{ units().toUpperCase() | translate }}
+    </button>
   </div>
+
   <div class="control-panel-group map-controls">
     <!--Pitch setting-->
     <button (click)="onSetPitchToDefault()" class="control-panel-button-pill">
@@ -22,14 +25,16 @@
         [ngStyle]="{ transform: `rotate(${bearInDegree()}deg)` }"
       />
     </button>
-
-    <!--  <button class="control-panel-button-pill">
-      <img src="assets/icons/layer-black_brown.svg" />
-    </button> -->
-    <!-- <button class="control-panel-button-pill">3D</button> -->
   </div>
 </div>
 
-@if(isLoading().loading){
+@if(selectedObject() && showDialog()){
+<details-dialog
+  [selectedObject]="selectedObject()"
+  [unit]="units()"
+  (closeDialog)="onDialogClosed()"
+></details-dialog>
+
+} @if(isLoading().loading){
 <loading [isInitialLoad]="isLoading().initial"></loading>
 }

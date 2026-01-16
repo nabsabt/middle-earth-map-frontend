@@ -1,14 +1,14 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'loading',
   template: `
-    @if(isInitialLoad){
+    @if(isInitialLoad()){
     <div class="loading-spinner-initial">
       <!-- <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." /> -->
       <h1>map of middle-earth</h1>
     </div>
-    } @if(!isInitialLoad){
+    } @if(!isInitialLoad()){
     <div class="loading-spinner">
       <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." />
     </div>
@@ -104,6 +104,6 @@ import { Component, Input, signal } from '@angular/core';
   ],
 })
 export class LoadingComponent {
-  @Input() isInitialLoad: boolean = true;
+  public isInitialLoad = input<boolean>(true);
   constructor() {}
 }

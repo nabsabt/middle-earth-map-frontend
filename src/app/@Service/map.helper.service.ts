@@ -49,6 +49,18 @@ export class MapHelperService {
     this.mapInstance = map;
     map.setMinPitch(0);
     map.setMaxPitch(0);
+
+    map.on('click', (e) => {
+      const layersToCheck = ['areas', 'paths', 'places'];
+      const features = map.queryRenderedFeatures(e.point, { layers: layersToCheck });
+
+      if (!features.length) {
+        // clicked empty space
+        this.MapSelectedObjectID.next(undefined);
+        return;
+      }
+    });
+
     return map;
   }
 

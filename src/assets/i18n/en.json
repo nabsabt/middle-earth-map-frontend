@@ -9,6 +9,6 @@
   "ABOUT": "about",
   "DONATE": "donate",
 
-  "UNITS_METRIC": "metric",
-  "UNITS_IMPERIAL": "imperial"
+  "METRIC": "metric",
+  "IMPERIAL": "imperial"
 }
