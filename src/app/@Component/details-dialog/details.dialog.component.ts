@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   inject,
   input,
-  Input,
+  OnDestroy,
   OnInit,
-  output,
   signal,
 } from '@angular/core';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -21,17 +21,18 @@ import { GISObject, Units } from '../../@Interface/maproot.interface';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DetailsDialogComponent implements OnInit {
+export class DetailsDialogComponent implements OnInit, OnDestroy {
   private breakPointObserver = inject(BreakpointObserver);
   private translateService = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
 
   public selectedObject = input<GISObject>();
-  public closeDialog = output();
   public unit = input<Units>();
   public lang = signal<'HU' | 'EN'>('EN');
 
   public isMobile = signal<boolean>(false);
+
+  public close = signal<boolean>(false);
 
   constructor() {
     this.breakPointObserver.isMatched('(min-width: 769px)')
@@ -54,10 +55,27 @@ export class DetailsDialogComponent implements OnInit {
       event.lang === 'hu' ? this.lang.set('HU') : this.lang.set('EN');
       this.cdr.markForCheck();
     });
+
+    effect(() => {
+      this.selectedObject()?.gisID ? this.close.set(false) : this.close.set(true);
+    });
   }
 
   public onCloseDialog() {
-    this.closeDialog.emit();
+    this.close.set(true);
   }
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    this.close.set(true);
+  }
+
+  /*  public onImagesLoaded() {
+    console.log('event ran.');
+    this.loadedImages.update((n) => n + 1);
+    if (this.loadedImages() === this.imageNumber()) {
+      console.log('All images loaded.');
+    }
+  } */
+
+  ngOnDestroy(): void {}
 }

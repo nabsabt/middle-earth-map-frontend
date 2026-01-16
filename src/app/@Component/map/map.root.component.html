@@ -28,13 +28,8 @@
   </div>
 </div>
 
-@if(selectedObject() && showDialog()){
-<details-dialog
-  [selectedObject]="selectedObject()"
-  [unit]="units()"
-  (closeDialog)="onDialogClosed()"
-></details-dialog>
+<details-dialog [selectedObject]="selectedObject()" [unit]="units()"></details-dialog>
 
-} @if(isLoading().loading){
+@if(isLoading().loading){
 <loading [isInitialLoad]="isLoading().initial"></loading>
 }

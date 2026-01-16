@@ -1,12 +1,18 @@
 <!--DESKTOP-->
 @if(!isMobile()){
-<div class="dialog-container dialog-container-desktop">
+<div
+  class="dialog-container dialog-container-desktop"
+  [class.desktop-dialog-open]="!close()"
+  [class.desktop-dialog-close]="close()"
+>
   <div class="close-action">
     <button (click)="onCloseDialog()" class="control-panel-button-pill">x</button>
   </div>
   <div class="dialog-content">
     <div class="dialog-title">
+      <!--Title-->
       <h1>{{ selectedObject()?.name?.[lang()] }}</h1>
+      <!--Subtitle-->
       @if(selectedObject()?.length){
       <h3>
         {{ selectedObject()?.length?.[unit() === 'metric' ? 'Km': 'Mi'] }}
@@ -20,6 +26,22 @@
 
       }
     </div>
+    <img src="assets/images/divider.png" />
+    <!--Description-->
+    <div class="dialog-description">
+      <p>{{selectedObject()?.description?.[lang()]}}</p>
+    </div>
+    <!-- <lightgallery [settings]="LightGallerySettings" [onBeforeSlide]="onBeforeSlide">
+      @for(img of selectedObject()?.gallery; track img){
+      <a href="{{ img }}">
+        <img
+          alt="{{selectedObject()?.name?.[lang()]}}"
+          src="{{ img }}"
+          style="width: 240px; height: auto"
+        />
+      </a>
+      }
+    </lightgallery> -->
   </div>
 </div>
 }

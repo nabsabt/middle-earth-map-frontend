@@ -3,11 +3,21 @@
   border-radius: 0 10px 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  //justify-content: space-between;
+  text-align: center;
   gap: 1rem;
-  align-items: center;
   padding: 0.5rem;
   box-shadow: 6px -4px 12px 3px rgba(0, 0, 0, 0.79);
+  h3 {
+    color: var(--dark-grey);
+  }
+  .dialog-description {
+    padding: 1rem;
+    white-space: pre-wrap;
+    text-align: justify;
+    line-height: 1.8;
+    height: 60%;
+  }
 }
 .dialog-container-desktop {
   .close-action {
@@ -17,14 +27,31 @@
     display: flex;
     justify-content: end;
   }
+  img {
+    width: 90%;
+  }
+
+  transform-origin: left center;
+
   position: fixed;
   left: 0;
   bottom: 0;
-  width: 400px;
-  max-width: 40vw;
 
   height: 75vh;
   max-height: 75vh;
 
   overflow-y: auto;
+}
+
+.desktop-dialog-open {
+  transition: 700ms;
+  opacity: 1;
+  width: 400px;
+  transform: scaleX(1);
+  max-width: 40vw;
+}
+.desktop-dialog-close {
+  transition: 700ms;
+  transform: scaleX(0);
+  opacity: 0;
 }

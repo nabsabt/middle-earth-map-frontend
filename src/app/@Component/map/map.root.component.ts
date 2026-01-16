@@ -64,7 +64,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public bearInDegree = signal<number>(0);
   public units = signal<Units>('metric');
 
-  public showDialog = signal<boolean>(false);
+  //public showDialog = signal<boolean>(false);
 
   constructor() {
     this.title.setTitle('Map of Middle-Earth');
@@ -133,7 +133,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
         this.selectedObject.set(res);
-        this.showDialog.set(true);
+        //this.showDialog.set(true);
         if (!isSelectedFromMap) {
           const layertype: LayerGroupKey = this.mapHelper.calcLayerGroupKeyFromGisID(gisID);
           this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
@@ -159,9 +159,9 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public onChangeUnits() {
     this.units() === 'metric' ? this.units.set('imperial') : this.units.set('metric');
   }
-  public onDialogClosed() {
+  /*  public onDialogClosed() {
     this.showDialog.set(false);
-  }
+  } */
   ngOnDestroy(): void {
     this.getObjectSub?.unsubscribe();
     this.getGeoJSONsSub?.unsubscribe();
