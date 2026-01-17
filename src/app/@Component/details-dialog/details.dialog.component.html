@@ -1,7 +1,7 @@
 <!--DESKTOP-->
 @if (!isMobile()) {
   <div
-    class="dialog-container dialog-container-desktop"
+    class="dialog-container-desktop"
     [class.desktop-dialog-open]="!close()"
     [class.desktop-dialog-close]="close()"
   >
@@ -27,39 +27,78 @@
         }
       </div>
       <img src="assets/images/divider.png" />
-      <!--Description-->
-      <div class="dialog-description">
-        <p>{{ selectedObject()?.description?.[lang()] }}</p>
-      </div>
-
+      <!--gallery (if has image)-->
       @if (selectedObject()?.gallery?.length) {
-        <div id="imgGallery" #imgGallery class="pswp-gallery">
+        <div id="imgGallery" #imgGallery class="img-gallery">
           @for (img of selectedObject()?.gallery; track img) {
-            <a href="{{ img }}">
-              <img src="{{ img }}" alt="" />
+            <a href="{{ img }}" class="img-gallery__item">
+              <img src="{{ img }}" alt="{{ selectedObject()?.name?.[lang()] }}" loading="lazy" />
             </a>
           }
         </div>
       }
+      <!--Description-->
+      <div class="dialog-description">
+        <p>{{ selectedObject()?.description?.[lang()] }}</p>
+      </div>
     </div>
   </div>
 }
 
 <!--MOBILE-->
-@if (isMobile()) {
-  <!--  <div #backdrop class="backdrop" (click)="onBackdropClick()"></div>
+@if (isMobile() && selectedObject()) {
+  <div
+    class="backdrop"
+    [class.backdrop-visible]="isExpanded()"
+    (click)="onBackdropClick()"
+    (pointerdown)="$event.stopPropagation()"
+  ></div>
 
-<div #sheet class="dialog-container dialog-container-mobile">
-  <div class="header" (mousedown)="startDrag($event)" (touchstart)="startDrag($event)">
-    <div (click)="onCloseOrOpen()" class="handle"></div>
-    <div class="title">{{ title() }}</div>
-  </div>
+  <div
+    class="dialog-container-mobile"
+    [style.transform]="'translateY(' + currentOffset() + 'px)'"
+    [class.sheet-animate]="!isDragging()"
+  >
+    <div class="header" (mousedown)="startDrag($event)" (touchstart)="startDrag($event)">
+      <div (click)="toggleMobile()" class="handle"></div>
+      <div class="title">
+        {{ selectedObject()?.name?.[lang()] }}
+      </div>
+    </div>
 
-  <div class="content">
-    <ng-content>
-      <h4>{{ subTitle() }}</h4>
-      <p>{{ content() }}</p>
-    </ng-content>
+    <div class="dialog-content">
+      <div class="dialog-title">
+        <!--Title-->
+        <h1>{{ selectedObject()?.name?.[lang()] }}</h1>
+        <!--Subtitle-->
+        @if (selectedObject()?.length) {
+          <h3>
+            {{ selectedObject()?.length?.[unit() === 'metric' ? 'Km' : 'Mi'] }}
+            {{ unit() === 'metric' ? 'km' : 'mi' }}
+          </h3>
+        }
+        @if (selectedObject()?.area) {
+          <h3>
+            {{ selectedObject()?.area?.[unit() === 'metric' ? 'sqKm' : 'sqMi'] }}
+            {{ unit() === 'metric' ? 'km' : 'mi' }}<sup>2</sup>
+          </h3>
+        }
+      </div>
+      <img src="assets/images/divider.png" />
+      <!--gallery (if has image)-->
+      @if (selectedObject()?.gallery?.length) {
+        <div id="imgGallery" #imgGallery class="img-gallery">
+          @for (img of selectedObject()?.gallery; track img) {
+            <a href="{{ img }}" class="img-gallery__item">
+              <img src="{{ img }}" alt="{{ selectedObject()?.name?.[lang()] }}" loading="lazy" />
+            </a>
+          }
+        </div>
+      }
+      <!--Description-->
+      <div class="dialog-description">
+        <p>{{ selectedObject()?.description?.[lang()] }}</p>
+      </div>
+    </div>
   </div>
-</div>  -->
 }
