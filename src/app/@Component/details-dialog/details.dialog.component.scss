@@ -51,6 +51,8 @@
   max-width: 40vw;
 }
 .desktop-dialog-close {
+  max-width: 40vw;
+  width: 400px;
   transition: 700ms;
   transform: scaleX(0);
   opacity: 0;

@@ -1,3 +1,4 @@
+@import 'photoswipe/style.css';
 body {
   margin: 0;
   height: 100%;
@@ -63,7 +64,10 @@ body {
   cursor: pointer;
   user-select: none;
 
-  transition: var(--secondary) 160ms ease, color 160ms ease, box-shadow 160ms ease,
+  transition:
+    var(--secondary) 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
     transform 80ms ease;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -149,8 +153,12 @@ body {
   /* text glow */
   text-shadow: var(--text-glow);
 
-  transition: var(--primary-green) 160ms ease, color 160ms ease, box-shadow 160ms ease,
-    transform 80ms ease, text-shadow 160ms ease;
+  transition:
+    var(--primary-green) 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 80ms ease,
+    text-shadow 160ms ease;
 
   &:hover {
     background-color: var(--primary-green-hovered);
@@ -165,7 +173,9 @@ body {
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
 
     transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), var(--inner-shadow);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.45),
+      var(--inner-shadow);
   }
 
   /* if you use SVG icons inside, make them follow text color */

@@ -1,17 +1,22 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   effect,
+  ElementRef,
   inject,
   input,
   OnDestroy,
   OnInit,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { GISObject, Units } from '../../@Interface/maproot.interface';
+import PhotoSwipeLightbox from 'photoswipe/lightbox';
+import 'photoswipe/style.css';
 
 @Component({
   selector: 'details-dialog',
@@ -22,9 +27,17 @@ import { GISObject, Units } from '../../@Interface/maproot.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsDialogComponent implements OnInit, OnDestroy {
+  @ViewChild('imgGallery')
+  set imgGallery(el: ElementRef<HTMLElement> | undefined) {
+    this.galleryEl.set(el?.nativeElement ?? null);
+  }
+
   private breakPointObserver = inject(BreakpointObserver);
   private translateService = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
+
+  private lightbox!: PhotoSwipeLightbox | undefined;
+  private galleryEl = signal<HTMLElement | null>(null);
 
   public selectedObject = input<GISObject>();
   public unit = input<Units>();
@@ -58,6 +71,15 @@ export class DetailsDialogComponent implements OnInit, OnDestroy {
 
     effect(() => {
       this.selectedObject()?.gisID ? this.close.set(false) : this.close.set(true);
+
+      const el = this.galleryEl();
+
+      // no DOM yet or no images -> destroy and do nothing
+      if (!el || !this.selectedObject()?.gallery?.length) {
+        this.destroyLightbox();
+        return;
+      }
+      queueMicrotask(() => this.initLightbox(el));
     });
   }
 
@@ -69,13 +91,47 @@ export class DetailsDialogComponent implements OnInit, OnDestroy {
     this.close.set(true);
   }
 
-  /*  public onImagesLoaded() {
-    console.log('event ran.');
-    this.loadedImages.update((n) => n + 1);
-    if (this.loadedImages() === this.imageNumber()) {
-      console.log('All images loaded.');
-    }
-  } */
+  private async initLightbox(el: HTMLElement) {
+    this.destroyLightbox();
 
-  ngOnDestroy(): void {}
+    // set real sizes
+    const links = el.querySelectorAll<HTMLAnchorElement>('a[href]');
+    for (const link of links) {
+      const img = new Image();
+      img.src = link.href;
+
+      try {
+        await img.decode();
+      } catch {
+        // fallback if decode fails (cross-origin / older browsers)
+        await new Promise<void>((resolve) => {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+        });
+      }
+
+      // only set if we got something valid
+      if (img.naturalWidth && img.naturalHeight) {
+        link.dataset['pswpWidth'] = String(img.naturalWidth);
+        link.dataset['pswpHeight'] = String(img.naturalHeight);
+      }
+    }
+
+    this.lightbox = new PhotoSwipeLightbox({
+      gallery: el,
+      children: 'a',
+      pswpModule: () => import('photoswipe'),
+    });
+
+    this.lightbox.init();
+  }
+
+  private destroyLightbox() {
+    this.lightbox?.destroy();
+    this.lightbox = undefined;
+  }
+
+  ngOnDestroy(): void {
+    this.lightbox?.destroy();
+  }
 }
