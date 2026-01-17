@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../@Service/loader.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DetailsDialogComponent } from '../details-dialog/details.dialog.component';
 
 @Component({
@@ -64,10 +64,14 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public bearInDegree = signal<number>(0);
   public units = signal<Units>('metric');
 
-  //public showDialog = signal<boolean>(false);
-
-  constructor() {
+  constructor(private translate: TranslateService) {
     this.title.setTitle('Map of Middle-Earth');
+
+    this.translate.onLangChange.subscribe((event) => {
+      this.title.setTitle(event.lang === 'hu' ? 'Középfölde térképe' : 'Map of Middle-Earth ');
+      this.mapHelper.setLabelLanguage(this.map, event.lang);
+    });
+
     this.meta.updateTag({
       name: 'description',
       content: 'Interactive Middle-earth map with places, routes and regions.',
@@ -81,7 +85,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loaderService.$isLoadingAsObservable.subscribe(
       (loading: { loading: boolean; initial: boolean }) => {
         this.isLoading.set(loading);
-      }
+      },
     );
   }
 

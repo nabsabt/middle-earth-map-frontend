@@ -132,6 +132,22 @@ export class MapHelperService {
     map.setLayoutProperty('areas-label', 'visibility', 'none');
   }
 
+  public setLabelLanguage(map: Map, lang: string) {
+    const labelLayers: string[] = ['areas-label', 'places-label'];
+
+    labelLayers.forEach((labelLayer: string) => {
+      map
+        ?.getLayer(labelLayer)
+        ?.setLayoutProperty('text-field', ['get', `name_${lang.toUpperCase()}`]);
+      const vis = map?.getLayoutProperty(labelLayer, 'visibility') as
+        | 'visible'
+        | 'none'
+        | undefined;
+      map?.setLayoutProperty(labelLayer, 'visibility', 'none');
+      map?.setLayoutProperty(labelLayer, 'visibility', vis ?? 'visible');
+    });
+  }
+
   public async onAddPoint(points: any, map: Map) {
     let hoveredID: undefined | number = undefined;
     points.features = points.features.map((f: any) => ({ ...f, id: f.properties.gisID }));
@@ -217,7 +233,7 @@ export class MapHelperService {
 
   private flyToValues(
     name: LayerGroupKey,
-    vertices: Array<[any][any]>
+    vertices: Array<[any][any]>,
   ): { coords: LngLatLike; zoomLvl: number } {
     const flyTo: { coords: LngLatLike; zoomLvl: number } = {
       coords: [0, 0] as LngLatLike,
