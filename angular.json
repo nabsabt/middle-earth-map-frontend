@@ -82,7 +82,10 @@
               "buildTarget": "frontend:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "allowedHosts": ["gravid-cotyledonary-eustolia.ngrok-free.dev"]
+          }
         },
         "test": {
           "builder": "@angular/build:unit-test"

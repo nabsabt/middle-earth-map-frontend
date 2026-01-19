@@ -1,5 +1,6 @@
 .wrapper {
   overflow-y: auto;
+  width: 100%;
   form {
     width: 100%;
     display: flex;
@@ -7,6 +8,9 @@
     justify-content: flex-start;
     gap: 1rem;
 
+    textarea {
+      resize: none;
+    }
     em {
       color: red;
       margin-top: -1rem;
@@ -27,10 +31,9 @@
       text-shadow: 0 0 6px rgba(255, 243, 176, 0.2);
 
       &::placeholder {
-        color: var(--placeholder);
         letter-spacing: 0.12em;
         font-weight: 100;
-        color: var(--light-grey);
+        color: var(--light-grey-hovered);
       }
     }
     .search__input:focus {
