@@ -10,5 +10,19 @@
   "DONATE": "donate",
 
   "METRIC": "metric",
-  "IMPERIAL": "imperial"
+  "IMPERIAL": "imperial",
+
+  "ABOUT_GENERAL": "The goal of this page is to bring Tolkien’s wonderful world to life on screen. It introduces the most famous locations and kingdoms of Middle-earth to visitors through a web map application. This project is purely fan-made; all information is based on the books and the movies.\n\nI do not own any of the visual materials used.\nThe images shown in the gallery are the property of Warner Bros.\nThe basemap was created by <a href='https://www.instagram.com/takie_pany/' target='_blank'>kapitan_ryjek</a>.\nThe 3D model of the One Ring was created by <a href='https://sketchfab.com/berzerkey' target='_blank'>berzerkey</a>.",
+  "ABOUT_DETAILS": "This project was built using Angular@21 (client-side) and NestJS@10 (server-side). Spatial data visualization is handled by MapLibre@5.15. For further details, please visit my <a href='https://github.com/nabsabt/' target='_blank'>GitHub profile</a>.",
+
+  "DICUSS_INFO": "Do you have any recommendation regarding the development of this web app? Did I miss some detail in the description of a location of Middle Earth? Or just wanna share something with me? Please, feel free to send me a message!",
+  "DISCUSS_MESSAGE": "Tell me...",
+  "DISCUSS_YOUR_NAME": "How can I call you?",
+  "DISCUSS_YOUR_EMAIL": "Your e-mail",
+  "DISCUSS_SEND_BUTTON": "send",
+  "DISCUSS_SENDING_BUTTON": "sending...",
+
+  "DISCUSS_FIELD_REQUIRED": "Please fill the field!",
+  "DISCUSS_FIELD_MINLENGTH": "The minimum character number is ",
+  "DISCUSS_EMAIL_FIELD_INVALID": "Invalid e-mail format!"
 }

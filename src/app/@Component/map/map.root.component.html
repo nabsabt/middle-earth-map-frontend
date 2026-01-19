@@ -3,6 +3,7 @@
 <navbar
   (selectedObjID)="selectGISFeature($event, false)"
   (layerToToggle)="toggleLayers($event)"
+  (modalToggle)="toggleModal($event)"
 ></navbar>
 
 <div class="control-panel">
@@ -30,6 +31,8 @@
 
 <details-dialog [selectedObject]="selectedObject()" [unit]="units()"></details-dialog>
 
-@if(isLoading().loading){
-<loading [isInitialLoad]="isLoading().initial"></loading>
+<modal [modalType]="modalToOpen()" (closeModal)="toggleModal(undefined)"></modal>
+
+@if (isLoading().loading) {
+  <loading [isInitialLoad]="isLoading().initial"></loading>
 }

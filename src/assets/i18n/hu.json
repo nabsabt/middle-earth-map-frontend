@@ -10,5 +10,19 @@
   "DONATE": "adomány",
 
   "METRIC": "metrikus",
-  "IMPERIAL": "birodalmi"
+  "IMPERIAL": "birodalmi",
+
+  "ABOUT_GENERAL": "Az oldal célja, hogy Tolkien megalkotott világát életre keltse a képernyőn. A webes térképes alkalmazás bemutatja Középfölde legismertebb helyszíneit és királyságait a látogatók számára. A projekt teljes mértékben rajongói alkotás; minden információ a könyvekből és a filmekből származik.\n\nA felhasznált vizuális anyagok nem az én tulajdonomat képezik.\nA galériában megjelenített képek a Warner Bros. tulajdonát képezik.\nAz alaptérképet <a href='https://www.instagram.com/takie_pany/' target='_blank' rel='noopener noreferrer'>kapitan_ryjek</a> készítette.\nAz Egy Gyűrű 3D modelljét <a href='https://sketchfab.com/berzerkey' target='_blank' rel='noopener noreferrer'>berzerkey</a> készítette.",
+  "ABOUT_DETAILS": "A projekt Angular@21 (kliensoldal) és NestJS@10 (szerveroldal) felhasználásával készült. A térbeli adatok megjelenítéséért a MapLibre@5.15 felel. További részletekért tekintsd meg a <a href='https://github.com/nabsabt/' target='_blank' rel='noopener noreferrer'>GitHub profilomat</a>.",
+
+  "DICUSS_INFO": "Van bármi javaslatod az app fejlesztését illetően? Valami elírást, téves infót találtál a térképi elemek leíró adatában? Esetleg csak szimplán üzenni szeretnél nekem? Dobj nyugodtan egy üzenetet!",
+  "DISCUSS_MESSAGE": "Add ki magadból...",
+  "DISCUSS_YOUR_NAME": "Hogyan szólíthatlak?",
+  "DISCUSS_YOUR_EMAIL": "E-mail címed",
+  "DISCUSS_SEND_BUTTON": "elküld",
+  "DISCUSS_SENDING_BUTTON": "küldés...",
+
+  "DISCUSS_FIELD_REQUIRED": "A mező kitöltése kötelező!",
+  "DISCUSS_FIELD_MINLENGTH": "Minimum karakter: ",
+  "DISCUSS_EMAIL_FIELD_INVALID": "Helytelen e-mail formátum!"
 }

@@ -1,0 +1,71 @@
+.modal-container {
+  position: absolute;
+  inset: 0;
+  height: 100dvh;
+  width: 100%;
+  z-index: 50;
+  backdrop-filter: blur(5px) brightness(0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+
+  /* CLOSED state (default) */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 700ms ease,
+    visibility 0ms linear 700ms;
+
+  .modal-content {
+    .close-action {
+      width: 100%;
+      display: flex;
+      justify-content: end;
+    }
+    /* animate the panel too */
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+    transition:
+      transform 700ms ease,
+      opacity 700ms ease;
+    padding: 1rem;
+    //overflow-y: auto;
+    min-width: 300px;
+    border-radius: 10px;
+    box-shadow: 6px -4px 12px 3px rgba(0, 0, 0, 0.79);
+    background-color: var(--secondary);
+  }
+
+  /* OPEN state */
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 700ms ease;
+
+    .modal-content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+/* DESKTOP VIEW */
+@media only screen and (min-width: 768px) {
+  .modal-content {
+    height: fit-content;
+    max-height: 80%;
+    width: 70%;
+  }
+}
+
+/* MOBILE VIEW */
+@media only screen and (max-width: 767px) {
+  .modal-content {
+    max-height: 70%;
+    width: 50%;
+  }
+}

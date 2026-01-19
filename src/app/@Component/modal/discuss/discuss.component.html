@@ -1,0 +1,54 @@
+<div class="wrapper">
+  <p>{{ 'DICUSS_INFO' | translate }}</p>
+  <form [formGroup]="form" (ngSubmit)="submitMessage()">
+    <textarea
+      class="formfield search__input"
+      formControlName="message"
+      rows="8"
+      placeholder="{{ 'DISCUSS_MESSAGE' | translate }}"
+    ></textarea>
+    @if (message?.invalid && (message?.dirty || message?.touched)) {
+      @if (message?.hasError('required')) {
+        <em class="formfield-error">{{ 'DISCUSS_FIELD_REQUIRED' | translate }}</em>
+      }
+      @if (message?.hasError('minlength')) {
+        <em class="formfield-error">{{ 'DISCUSS_FIELD_MINLENGTH' | translate }} 3</em>
+      }
+    }
+    <!-- optional fields -->
+    <input
+      class="formfield search__input"
+      formControlName="name"
+      placeholder="{{ 'DISCUSS_YOUR_NAME' | translate }}"
+    />
+    @if (name?.invalid && (name?.dirty || name?.touched)) {
+      @if (name?.hasError('required')) {
+        <em class="formfield-error">{{ 'DISCUSS_FIELD_REQUIRED' | translate }}</em>
+      }
+    }
+    <input
+      class="formfield search__input"
+      formControlName="email"
+      placeholder="{{ 'DISCUSS_YOUR_EMAIL' | translate }}"
+    />
+    @if (email?.invalid && (email?.dirty || email?.touched)) {
+      @if (email?.hasError('required')) {
+        <em class="formfield-error">{{ 'DISCUSS_FIELD_REQUIRED' | translate }}</em>
+      }
+      @if (email?.hasError('email')) {
+        <em class="formfield-error">{{ 'DISCUSS_EMAIL_FIELD_INVALID' | translate }}</em>
+      }
+    }
+
+    <button class="primary-btn" type="submit" [disabled]="sending()">
+      {{ (sending() ? 'DISCUSS_SENDING_BUTTON' : 'DISCUSS_SEND_BUTTON') | translate }}
+    </button>
+
+    @if (done()) {
+      <p [style.color]="'var(--primary-green)'">Thanks! Sent.</p>
+    }
+    @if (error()) {
+      <p [style.color]="'var(--dark-brown)'">{{ error() }}</p>
+    }
+  </form>
+</div>

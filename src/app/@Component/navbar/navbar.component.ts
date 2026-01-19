@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, output, Output, signal } from '@angular/core';
-import { LayerGroupKey, NavbarControls } from '../../@Interface/maproot.interface';
+import { LayerGroupKey, ModalType, NavbarControls } from '../../@Interface/maproot.interface';
 import { SearchInputComponent } from '../search-input/search.input.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
 
   public selectedObjID = output<number>();
   public layerToToggle = output<LayerGroupKey>();
+  public modalToggle = output<ModalType>();
 
   public selectedNavbarControl = signal<NavbarControls>(undefined);
 
@@ -40,5 +41,9 @@ export class NavbarComponent implements OnInit {
     this.selectedNavbarControl() === button
       ? this.selectedNavbarControl.set(undefined)
       : this.selectedNavbarControl.set(button);
+  }
+
+  public onOpenModal(modalName: ModalType) {
+    this.modalToggle.emit(modalName);
   }
 }

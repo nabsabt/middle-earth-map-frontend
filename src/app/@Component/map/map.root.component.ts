@@ -13,7 +13,7 @@ import { MapRootService } from '../../@Service/map.root.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { GISObject, Units } from '../../@Interface/maproot.interface';
+import { GISObject, ModalType, Units } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../@Service/loader.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DetailsDialogComponent } from '../details-dialog/details.dialog.component';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'map-root',
@@ -37,6 +38,7 @@ import { DetailsDialogComponent } from '../details-dialog/details.dialog.compone
     NavbarComponent,
     TranslateModule,
     DetailsDialogComponent,
+    ModalComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -63,6 +65,8 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public bearInDegree = signal<number>(0);
   public units = signal<Units>('metric');
+
+  public modalToOpen = signal<ModalType | undefined>(undefined);
 
   constructor(private translate: TranslateService) {
     this.title.setTitle('Map of Middle-Earth');
@@ -137,7 +141,6 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getObjectSub = this.mapService.getGISObject(gisID).subscribe({
       next: (res: GISObject) => {
         this.selectedObject.set(res);
-        //this.showDialog.set(true);
         if (!isSelectedFromMap) {
           const layertype: LayerGroupKey = this.mapHelper.calcLayerGroupKeyFromGisID(gisID);
           this.mapHelper.singleGisObjectSelected(this.map, gisID, layertype, this[layertype]());
@@ -163,9 +166,10 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   public onChangeUnits() {
     this.units() === 'metric' ? this.units.set('imperial') : this.units.set('metric');
   }
-  /*  public onDialogClosed() {
-    this.showDialog.set(false);
-  } */
+
+  public toggleModal(modaltype: ModalType | undefined) {
+    this.modalToOpen.set(modaltype);
+  }
   ngOnDestroy(): void {
     this.getObjectSub?.unsubscribe();
     this.getGeoJSONsSub?.unsubscribe();

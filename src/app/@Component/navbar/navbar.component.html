@@ -3,6 +3,7 @@
     <search-input (selectedGISID)="selectFeature($event)"></search-input>
   </div>
   <div class="user-controls-container">
+    <!--Paths-->
     <button
       [class.active-button]="selectedNavbarControl() == 'paths'"
       class="secondary-btn"
@@ -10,6 +11,8 @@
     >
       {{ 'PATHS' | translate }}
     </button>
+
+    <!--Areas-->
     <button
       [class.active-button]="selectedNavbarControl() == 'areas'"
       class="secondary-btn"
@@ -17,6 +20,8 @@
     >
       {{ 'AREAS' | translate }}
     </button>
+
+    <!--Places-->
     <button
       [class.active-button]="selectedNavbarControl() == 'places'"
       class="secondary-btn"
@@ -24,24 +29,30 @@
     >
       {{ 'PLACES' | translate }}
     </button>
+
+    <!--Discuss-->
     <button
       [class.active-button]="selectedNavbarControl() == 'discuss'"
       class="secondary-btn"
-      (click)="toggleNavbarActiveButton('discuss')"
+      (click)="toggleNavbarActiveButton('discuss'); onOpenModal('discuss')"
     >
       {{ 'DISCUSS' | translate }}
     </button>
+
+    <!--About-->
     <button
       [class.active-button]="selectedNavbarControl() == 'about'"
       class="secondary-btn"
-      (click)="toggleNavbarActiveButton('about')"
+      (click)="toggleNavbarActiveButton('about'); onOpenModal('about')"
     >
       {{ 'ABOUT' | translate }}
     </button>
+
+    <!--Donate-->
     <button
       [class.active-button]="selectedNavbarControl() == 'donate'"
       class="secondary-btn"
-      (click)="toggleNavbarActiveButton('donate')"
+      (click)="toggleNavbarActiveButton('donate'); onOpenModal('donate')"
     >
       {{ 'DONATE' | translate }}
     </button>

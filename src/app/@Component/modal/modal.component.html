@@ -1,0 +1,20 @@
+<div class="modal-container" [class.open]="!!modalType()" [class.close]="!modalType()">
+  <div class="modal-content">
+    <div class="close-action">
+      <button class="control-panel-button-pill" (click)="closeModal.emit()">x</button>
+    </div>
+    <h1>{{ (modalType() ?? '').toUpperCase() | translate }}</h1>
+
+    @switch (modalType()) {
+      @case ('about') {
+        <about></about>
+      }
+      @case ('discuss') {
+        <discuss></discuss>
+      }
+      @case ('donate') {
+        <about></about>
+      }
+    }
+  </div>
+</div>
