@@ -13,7 +13,13 @@ import { MapRootService } from '../../@Service/map.root.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { GISObject, ModalType, Units } from '../../@Interface/maproot.interface';
+import {
+  getGeoJSONSError,
+  getGISObjectError,
+  GISObject,
+  ModalType,
+  Units,
+} from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
@@ -23,13 +29,14 @@ import { LoaderService } from '../../@Service/loader.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DetailsDialogComponent } from '../details-dialog/details.dialog.component';
 import { ModalComponent } from '../modal/modal.component';
+import { AlertService } from '../../@Service/alert.service';
 
 @Component({
   selector: 'map-root',
   templateUrl: './map.root.component.html',
   styleUrl: './map.root.component.scss',
   standalone: true,
-  providers: [MapHelperService, MapRootService],
+  providers: [MapHelperService, MapRootService, AlertService],
   imports: [
     NavbarComponent,
     FormsModule,
@@ -51,6 +58,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapHelper = inject(MapHelperService);
   private mapService = inject(MapRootService);
   private loaderService = inject(LoaderService);
+  private alertService = inject(AlertService);
 
   public isLoading = signal<{ loading: boolean; initial: boolean }>({
     loading: false,
@@ -68,12 +76,15 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public modalToOpen = signal<ModalType | undefined>(undefined);
 
+  public lang = signal<string>('');
+
   constructor(private translate: TranslateService) {
     this.title.setTitle('Map of Middle-Earth');
 
     this.translate.onLangChange.subscribe((event) => {
       this.title.setTitle(event.lang === 'hu' ? 'Középfölde térképe' : 'Map of Middle-Earth ');
       this.mapHelper.setLabelLanguage(this.map, event.lang);
+      this.lang.set(event.lang);
     });
 
     this.meta.updateTag({
@@ -95,6 +106,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.map = this.mapHelper.initializeMap();
+    this.lang.set(this.translate.currentLang);
   }
 
   ngAfterViewInit() {
@@ -128,6 +140,15 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.loaderService.hideLoader();
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
+          const msg: getGeoJSONSError = error.error;
+          error.error
+            ? this.alertService.showAlert(this.lang() === 'hu' ? msg.message.HU : msg.message.EN, {
+                position: 'bottom',
+              })
+            : this.alertService.showAlert(error.error, {
+                position: 'bottom',
+              });
+
           this.loaderService.hideLoader();
           return error;
         },
@@ -149,6 +170,15 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loaderService.hideLoader();
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
+        const msg: getGISObjectError = error.error;
+        error.error
+          ? this.alertService.showAlert(this.lang() === 'hu' ? msg.message.HU : msg.message.EN, {
+              position: 'bottom',
+            })
+          : this.alertService.showAlert(error.error, {
+              position: 'bottom',
+            });
+
         this.loaderService.hideLoader();
         return error;
       },

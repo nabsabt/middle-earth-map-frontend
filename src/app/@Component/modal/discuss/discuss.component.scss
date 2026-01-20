@@ -1,6 +1,10 @@
 .wrapper {
-  overflow-y: auto;
-  width: 100%;
+  //overflow-y: auto;
+  height: fit-content;
+  padding: 0 1rem;
+  p {
+    text-align: justify;
+  }
   form {
     width: 100%;
     display: flex;
@@ -17,7 +21,7 @@
       font-size: small;
     }
     .formfield {
-      width: 50%;
+      //width: 50%;
       min-width: 200px;
     }
     .search__input {
@@ -49,13 +53,13 @@
 /* DESKTOP VIEW */
 @media only screen and (min-width: 768px) {
   .wrapper {
-    height: 70%;
+    //height: 70%;
   }
 }
 
 /* MOBILE VIEW */
 @media only screen and (max-width: 767px) {
   .wrapper {
-    height: 80%;
+    //height: 80%;
   }
 }

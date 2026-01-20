@@ -10,7 +10,7 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import { SearchResults } from '../../@Interface/maproot.interface';
+import { SearchResultError, SearchResults } from '../../@Interface/maproot.interface';
 import { Subscription } from 'rxjs';
 import { MapRootService } from '../../@Service/map.root.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -29,10 +29,6 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
 export class SearchInputComponent implements OnInit, OnDestroy {
   public changeToLangValue = signal<string>('en');
 
-  ngOnInit(): void {
-    this.changeToLangValue.set(this.translateService.currentLang === 'en' ? 'hu' : 'en');
-  }
-
   @Output() selectedGISID = new EventEmitter<number>();
   private getSearchResultSub: Subscription;
 
@@ -48,6 +44,10 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     translateService.setDefaultLang('en');
     translateService.use('en');
   }
+  ngOnInit(): void {
+    this.changeToLangValue.set(this.translateService.currentLang === 'en' ? 'hu' : 'en');
+  }
+
   onSearch() {
     if (this.value() === '') return;
 
@@ -63,6 +63,12 @@ export class SearchInputComponent implements OnInit, OnDestroy {
           this.searchResults.set(res);
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
+          const msg: SearchResultError = error.error;
+          this.alertService.showAlert(
+            this.translateService.currentLang === 'hu' ? msg.message.HU : msg.message.EN,
+            { position: 'bottom' },
+          );
+
           return error;
         },
       });

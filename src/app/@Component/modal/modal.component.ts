@@ -3,12 +3,13 @@ import { ModalType } from '../../@Interface/maproot.interface';
 import { TranslateModule } from '@ngx-translate/core';
 import { AboutComponent } from './about/about.component';
 import { DiscussComponent } from './discuss/discuss.component';
+import { DonateComponent } from './donate/donate.component';
 
 @Component({
   selector: 'modal',
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
-  imports: [TranslateModule, AboutComponent, DiscussComponent],
+  imports: [TranslateModule, AboutComponent, DiscussComponent, DonateComponent],
   providers: [],
 })
 export class ModalComponent implements OnInit, OnDestroy {

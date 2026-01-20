@@ -66,7 +66,6 @@ export class DiscussComponent {
     this.sending.set(true);
 
     try {
-      console.log('trying');
       const { message, email, name } = this.form.value;
       await this.mailService.send(message!, email || undefined, name || undefined);
       this.done.set(true);

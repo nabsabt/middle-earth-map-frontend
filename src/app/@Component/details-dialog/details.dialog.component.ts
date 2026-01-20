@@ -56,7 +56,7 @@ export class DetailsDialogComponent implements OnInit, OnDestroy, AfterViewInit 
    * mobile dialog settings->
    */
   public isExpanded = signal<boolean>(false);
-  private collapsedHeight = signal<number>(60); // px - ennyi látszik mindig alul
+  private collapsedHeight = signal<number>(50); // px - ennyi látszik mindig alul
   private expandedRatio = signal<number>(0.6); // 60vh
 
   public expandedHeight = signal<number>(0); // px
@@ -190,10 +190,10 @@ export class DetailsDialogComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
-  public onBackdropClick() {
+  /*   public onBackdropClick() {
     this.collapseMobile();
   }
-
+ */
   /**
    * Gallery logic
    * @param el to where the gallery is rendered

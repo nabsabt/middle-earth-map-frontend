@@ -1,7 +1,7 @@
 {
   "LOADING_SCREEN_TITLE": "map of middle-earth",
 
-  "SEARCHING_PLACES": "search places...",
+  "SEARCHING_PLACES": "search...",
   "PATHS": "paths",
   "AREAS": "areas",
   "PLACES": "places",
@@ -24,5 +24,10 @@
 
   "DISCUSS_FIELD_REQUIRED": "Please fill the field!",
   "DISCUSS_FIELD_MINLENGTH": "The minimum character number is ",
-  "DISCUSS_EMAIL_FIELD_INVALID": "Invalid e-mail format!"
+  "DISCUSS_EMAIL_FIELD_INVALID": "Invalid e-mail format!",
+
+  "DONATE_DESCRIPTION": "Developing this app is a joy in itself, driven purely by my love for Tolkien’s world. As time allows, I plan to expand it with additional features. However, running the project (VPS and domain rental — and of course the time invested) does come with some costs. While your visit alone is already an honor, I am especially grateful if you choose to support my work.",
+  "DONATE_1EURO": "for second breakfast",
+  "DONATE_2EURO": "for a pack of pipe weed from the South Farthing",
+  "DONATE_5EURO": "my friend...you bow to no one!"
 }
