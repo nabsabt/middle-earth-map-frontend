@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FeedbackMailService } from '../../../@Service/mail.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertService } from '../../../@Service/alert.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map, startWith } from 'rxjs';
+import { map, startWith, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'discuss',
@@ -14,7 +22,10 @@ import { map, startWith } from 'rxjs';
   providers: [AlertService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DiscussComponent {
+export class DiscussComponent implements OnInit, OnDestroy {
+  private onCheckMailSub: Subscription;
+  private onSendMailSub: Subscription;
+
   private mailService = inject(FeedbackMailService);
   private translateService = inject(TranslateService);
   private alertService = inject(AlertService);
@@ -27,16 +38,37 @@ export class DiscussComponent {
     { initialValue: 'EN' as const },
   );
 
+  public canMailBeSent = signal<boolean>(true);
   public sending = signal<boolean>(false);
   public done = signal<boolean>(false);
   public error = signal<string>('');
 
   constructor() {}
+  ngOnInit(): void {
+    this.onCheckMailSub = this.mailService.canMailBeSent().subscribe({
+      next: (res: { status: string }) => {
+        if (res.status === 'wait 24 hours') {
+          this.canMailBeSent.set(false);
+        } else {
+          this.canMailBeSent.set(true);
+        }
+      },
+      error: (error: HttpErrorResponse): HttpErrorResponse => {
+        return error;
+      },
+    });
+  }
 
   form = new FormGroup({
-    message: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    name: new FormControl('', [Validators.required]),
+    message: new FormControl({ value: '', disabled: this.canMailBeSent() }, [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    email: new FormControl({ value: '', disabled: this.canMailBeSent() }, [
+      Validators.required,
+      Validators.email,
+    ]),
+    name: new FormControl({ value: '', disabled: this.canMailBeSent() }, [Validators.required]),
   });
 
   get message() {
@@ -53,7 +85,6 @@ export class DiscussComponent {
     this.error.set('');
     this.done.set(false);
     if (this.form.invalid) {
-      console.log('invalif, ', this.lang());
       this.form.markAllAsTouched();
       this.alertService.showAlert(
         this.lang() === 'HU'
@@ -65,26 +96,56 @@ export class DiscussComponent {
     }
     this.sending.set(true);
 
-    try {
-      const { message, email, name } = this.form.value;
-      await this.mailService.send(message!, email || undefined, name || undefined);
-      this.done.set(true);
-      this.form.reset();
-      this.alertService.showAlert(
-        this.lang() === 'HU' ? 'Üzenet elküldve! Köszönöm!' : 'Message sent! Thank you!',
-        { position: 'bottom' },
-      );
-    } catch (e: any) {
-      console.log(e?.message);
-      this.error.set(this.lang() === 'HU' ? 'Hiba történt!' : 'Some error occured!');
-      this.alertService.showAlert(
-        this.lang() === 'HU'
-          ? 'Az üzenetküldés sikertelen! Kérlek, próbálkozz kicsit később!'
-          : 'Could not send message! Please, try again a bit later!',
-        { position: 'bottom' },
-      );
-    } finally {
-      this.sending.set(false);
-    }
+    this.onSendMailSub = this.mailService.postNewMail().subscribe({
+      next: async (res: { status: string }) => {
+        if (res.status === 'success') {
+          /**
+           * Mail can be sent, now calling EmailJS service->
+           */
+          try {
+            const { message, email, name } = this.form.value;
+            await this.mailService.send(message!, email || undefined, name || undefined);
+            this.done.set(true);
+            this.form.reset();
+            this.alertService.showAlert(
+              this.lang() === 'HU' ? 'Üzenet elküldve! Köszönöm!' : 'Message sent! Thank you!',
+              { position: 'bottom' },
+            );
+          } catch (e: any) {
+            this.error.set(this.lang() === 'HU' ? 'Hiba történt!' : 'Some error occured!');
+            this.alertService.showAlert(
+              this.lang() === 'HU'
+                ? 'Az üzenetküldés sikertelen! Kérlek, próbálkozz kicsit később!'
+                : 'Could not send message! Please, try again a bit later!',
+              { position: 'bottom' },
+            );
+          } finally {
+            this.sending.set(false);
+          }
+          return;
+        } else {
+          this.alertService.showAlert(
+            this.lang() === 'HU'
+              ? 'Kérlek, várj egy kicsit a következő üzenet küldésével!'
+              : 'Please, wait a bit, till you send the next message!',
+            { position: 'bottom' },
+          );
+        }
+      },
+      error: (error: HttpErrorResponse): HttpErrorResponse => {
+        this.alertService.showAlert(
+          this.lang() === 'HU'
+            ? 'Az üzenetküldés sikertelen! Kérlek, próbálkozz kicsit később!'
+            : 'Could not send message! Please, try again a bit later!',
+          { position: 'bottom' },
+        );
+        return error;
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.onCheckMailSub?.unsubscribe();
+    this.onSendMailSub?.unsubscribe();
   }
 }

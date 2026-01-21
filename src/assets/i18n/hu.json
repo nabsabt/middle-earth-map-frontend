@@ -21,6 +21,8 @@
   "DISCUSS_YOUR_EMAIL": "E-mail címed",
   "DISCUSS_SEND_BUTTON": "elküld",
   "DISCUSS_SENDING_BUTTON": "küldés...",
+  "DISCUSS_SENT": "Üzenet elküldve!",
+  "DISCUSS_WAIT_24H": "Kérlek, várj egy kicsit a következő üzenet küldéséig!",
 
   "DISCUSS_FIELD_REQUIRED": "A mező kitöltése kötelező!",
   "DISCUSS_FIELD_MINLENGTH": "Minimum karakter: ",

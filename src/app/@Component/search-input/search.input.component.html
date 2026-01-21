@@ -12,28 +12,30 @@
       (blur)="isFocused.set(false)"
     />
     <!-- Clear button (only shows if there's text) -->
-    @if(value()?.length){
-    <button
-      class="me-clear__btn me-clear__btn--clear"
-      type="button"
-      aria-label="Clear"
-      (click)="value.set(''); isFocused.set(true)"
-    >
-      X
-    </button>
+    @if (value()?.length) {
+      <button
+        class="me-clear__btn me-clear__btn--clear"
+        type="button"
+        aria-label="Clear"
+        (click)="value.set(''); isFocused.set(true)"
+      >
+        X
+      </button>
     }
     <button (click)="changeLanguage()" class="control-panel-button-pill">
       {{ changeToLangValue() }}
     </button>
   </div>
 
-  @if(searchResults().length > 0 && value().length !== 0){
-  <div class="search-results">
-    <ul>
-      @for(searchresult of searchResults(); track searchresult){
-      <li (click)="onSearchResultSelected(searchresult.gisID)">{{ searchresult.name.EN }}</li>
-      }
-    </ul>
-  </div>
+  @if (searchResults().length > 0 && value().length !== 0) {
+    <div class="search-results">
+      <ul>
+        @for (searchresult of searchResults(); track searchresult) {
+          <li (click)="onSearchResultSelected(searchresult.gisID)">
+            {{ searchresult.name[translateService.currentLang === 'hu' ? 'HU' : 'EN'] }}
+          </li>
+        }
+      </ul>
+    </div>
   }
 </div>

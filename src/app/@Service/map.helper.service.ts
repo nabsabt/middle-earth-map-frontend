@@ -133,6 +133,7 @@ export class MapHelperService {
   }
 
   public setLabelLanguage(map: Map, lang: string) {
+    if (!map.isStyleLoaded()) return;
     const labelLayers: string[] = ['areas-label', 'places-label'];
 
     labelLayers.forEach((labelLayer: string) => {

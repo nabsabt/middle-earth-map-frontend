@@ -21,6 +21,8 @@
   "DISCUSS_YOUR_EMAIL": "Your e-mail",
   "DISCUSS_SEND_BUTTON": "send",
   "DISCUSS_SENDING_BUTTON": "sending...",
+  "DISCUSS_SENT": "Message sent!",
+  "DISCUSS_WAIT_24H": "Please, wait a bit till you send the next message!",
 
   "DISCUSS_FIELD_REQUIRED": "Please fill the field!",
   "DISCUSS_FIELD_MINLENGTH": "The minimum character number is ",

@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import emailjs from '@emailjs/browser';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class FeedbackMailService {
   private readonly serviceId = environment.emailjs.serviceId;
   private readonly templateId = environment.emailjs.templateId;
   private readonly publicKey = environment.emailjs.publicKey;
+
+  constructor(private http: HttpClient) {}
+
+  public canMailBeSent(): Observable<{ status: string }> {
+    return this.http.get<{ status: string }>(`${environment.apiURL}/api/checkEmailSend`);
+  }
+
+  public postNewMail(): Observable<{ status: string }> {
+    return this.http.post<{ status: string }>(`${environment.apiURL}/api/postNewMail`, {});
+  }
 
   async send(message: string, fromEmail?: string, fromName?: string): Promise<void> {
     const trimmed = message?.trim();

@@ -30,7 +30,6 @@
       class="formfield search__input"
       formControlName="email"
       rows="1"
-      r
       placeholder="{{ 'DISCUSS_YOUR_EMAIL' | translate }}"
     ></textarea>
     @if (email?.invalid && (email?.dirty || email?.touched)) {
@@ -42,12 +41,15 @@
       }
     }
 
-    <button class="primary-btn" type="submit" [disabled]="sending()">
+    <button class="primary-btn" type="submit" [disabled]="sending() || !canMailBeSent()">
       {{ (sending() ? 'DISCUSS_SENDING_BUTTON' : 'DISCUSS_SEND_BUTTON') | translate }}
     </button>
 
     @if (done()) {
-      <p [style.color]="'var(--primary-green)'">Thanks! Sent.</p>
+      <p [style.color]="'var(--primary-green)'">{{ 'DISCUSS_SENT' | translate }}</p>
+    }
+    @if (!canMailBeSent()) {
+      <p [style.color]="'var(--primary-green)'">{{ 'DISCUSS_WAIT_24H' | translate }}</p>
     }
     @if (error()) {
       <p [style.color]="'var(--dark-brown)'">{{ error() }}</p>

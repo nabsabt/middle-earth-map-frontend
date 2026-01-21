@@ -40,7 +40,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
 
   public searchResults = signal<Array<SearchResults>>([]);
 
-  constructor(private translateService: TranslateService) {
+  constructor(public translateService: TranslateService) {
     translateService.setDefaultLang('en');
     translateService.use('en');
   }
@@ -52,7 +52,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     if (this.value() === '') return;
 
     this.getSearchResultSub = this.mapService
-      .getSearchResults({ input: this.value(), lang: 'en' })
+      .getSearchResults({ input: this.value(), lang: this.translateService.currentLang })
       .subscribe({
         next: (res: SearchResults[]) => {
           if (res.length === 0) {
