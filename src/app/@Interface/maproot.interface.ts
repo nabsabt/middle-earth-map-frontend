@@ -39,3 +39,5 @@ export type NavbarControls =
   | undefined;
 
 export type Units = 'metric' | 'imperial';
+
+export type AI_CHAR = 'Illuvatar' | 'Gandalf' | 'Sauron' | 'Aragorn' | 'Gollum';

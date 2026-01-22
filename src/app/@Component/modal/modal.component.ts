@@ -4,12 +4,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AboutComponent } from './about/about.component';
 import { DiscussComponent } from './discuss/discuss.component';
 import { DonateComponent } from './donate/donate.component';
+import { ChatComponent } from './chat/chat.component';
 
 @Component({
   selector: 'modal',
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
-  imports: [TranslateModule, AboutComponent, DiscussComponent, DonateComponent],
+  imports: [TranslateModule, AboutComponent, DiscussComponent, DonateComponent, ChatComponent],
   providers: [],
 })
 export class ModalComponent implements OnInit, OnDestroy {
