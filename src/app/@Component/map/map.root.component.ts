@@ -13,13 +13,7 @@ import { MapRootService } from '../../@Service/map.root.service';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import {
-  getGeoJSONSError,
-  getGISObjectError,
-  GISObject,
-  ModalType,
-  Units,
-} from '../../@Interface/maproot.interface';
+import { GISObject, ModalType, Units } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey } from '../../@Interface/maproot.interface';
 import { CommonModule } from '@angular/common';
@@ -83,8 +77,13 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.translate.onLangChange.subscribe((event) => {
       this.title.setTitle(event.lang === 'hu' ? 'Középfölde térképe' : 'Map of Middle-Earth ');
-      this.mapHelper.setLabelLanguage(this.map, event.lang);
       this.lang.set(event.lang);
+      /**
+       * if no layer added yet, no label language is to be changed->
+       */
+      this.map?.getLayersOrder().length > 0
+        ? this.mapHelper.setLabelLanguage(this.map, this.lang())
+        : '';
     });
 
     this.meta.updateTag({
@@ -140,14 +139,9 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
           this.loaderService.hideLoader();
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
-          const msg: getGeoJSONSError = error.error;
-          error.error
-            ? this.alertService.showAlert(this.lang() === 'hu' ? msg.message.HU : msg.message.EN, {
-                position: 'bottom',
-              })
-            : this.alertService.showAlert(error.error, {
-                position: 'bottom',
-              });
+          this.alertService.showAlert(error.error.message, {
+            position: 'bottom',
+          });
 
           this.loaderService.hideLoader();
           return error;
@@ -170,14 +164,9 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loaderService.hideLoader();
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
-        const msg: getGISObjectError = error.error;
-        error.error
-          ? this.alertService.showAlert(this.lang() === 'hu' ? msg.message.HU : msg.message.EN, {
-              position: 'bottom',
-            })
-          : this.alertService.showAlert(error.error, {
-              position: 'bottom',
-            });
+        this.alertService.showAlert(error.error.message, {
+          position: 'bottom',
+        });
 
         this.loaderService.hideLoader();
         return error;

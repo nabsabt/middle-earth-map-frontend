@@ -10,7 +10,9 @@ export class MapRootService {
   constructor() {}
   private http = inject(HttpClient);
 
-  public getSearchResults(params: { input: string; lang: string }): Observable<SearchResults[]> {
+  public getSearchResults(params: {
+    input: string;
+  }): Observable<SearchResults[] | { message: string }> {
     return this.http.get<SearchResults[]>(`${environment.apiURL}/api/getSearchResults`, { params });
   }
 

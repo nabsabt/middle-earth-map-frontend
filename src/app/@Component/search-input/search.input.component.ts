@@ -10,7 +10,7 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import { SearchResultError, SearchResults } from '../../@Interface/maproot.interface';
+import { SearchResults } from '../../@Interface/maproot.interface';
 import { Subscription } from 'rxjs';
 import { MapRootService } from '../../@Service/map.root.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -51,27 +51,22 @@ export class SearchInputComponent implements OnInit, OnDestroy {
   onSearch() {
     if (this.value() === '') return;
 
-    this.getSearchResultSub = this.mapService
-      .getSearchResults({ input: this.value(), lang: this.translateService.currentLang })
-      .subscribe({
-        next: (res: SearchResults[]) => {
-          if (res.length === 0) {
-            this.alertService.showAlert('No results found.', { position: 'bottom' });
-            this.searchResults.set([]);
-            return;
-          }
+    this.getSearchResultSub = this.mapService.getSearchResults({ input: this.value() }).subscribe({
+      next: (res: SearchResults[] | { message: string }) => {
+        if (Array.isArray(res)) {
           this.searchResults.set(res);
-        },
-        error: (error: HttpErrorResponse): HttpErrorResponse => {
-          const msg: SearchResultError = error.error;
-          this.alertService.showAlert(
-            this.translateService.currentLang === 'hu' ? msg.message.HU : msg.message.EN,
-            { position: 'bottom' },
-          );
+        } else {
+          this.alertService.showAlert(res.message, { position: 'bottom' });
+          this.searchResults.set([]);
+          return;
+        }
+      },
+      error: (error: HttpErrorResponse): HttpErrorResponse => {
+        this.alertService.showAlert(error.error.message, { position: 'bottom' });
 
-          return error;
-        },
-      });
+        return error;
+      },
+    });
   }
 
   public onSearchResultSelected(gisID: number) {

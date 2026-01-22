@@ -39,6 +39,8 @@ export class DiscussComponent implements OnInit, OnDestroy {
   );
 
   public canMailBeSent = signal<boolean>(true);
+  public warningMessage = signal<string | undefined>('');
+
   public sending = signal<boolean>(false);
   public done = signal<boolean>(false);
   public error = signal<string>('');
@@ -46,12 +48,16 @@ export class DiscussComponent implements OnInit, OnDestroy {
   constructor() {}
   ngOnInit(): void {
     this.onCheckMailSub = this.mailService.canMailBeSent().subscribe({
-      next: (res: { status: string }) => {
-        if (res.status === 'wait 24 hours') {
-          this.canMailBeSent.set(false);
-        } else {
-          this.canMailBeSent.set(true);
+      next: (res: { status: boolean; warningMessage: string | undefined }) => {
+        this.canMailBeSent.set(res.status);
+
+        if (!res.status) {
+          this.form.controls.message.disable();
+          this.form.controls.email.disable();
+          this.form.controls.name.disable();
         }
+
+        !res.status ? this.warningMessage.set(res.warningMessage) : '';
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
         return error;
@@ -60,15 +66,9 @@ export class DiscussComponent implements OnInit, OnDestroy {
   }
 
   form = new FormGroup({
-    message: new FormControl({ value: '', disabled: this.canMailBeSent() }, [
-      Validators.required,
-      Validators.minLength(3),
-    ]),
-    email: new FormControl({ value: '', disabled: this.canMailBeSent() }, [
-      Validators.required,
-      Validators.email,
-    ]),
-    name: new FormControl({ value: '', disabled: this.canMailBeSent() }, [Validators.required]),
+    message: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('', [Validators.required, Validators.email, Validators.minLength(3)]),
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
   });
 
   get message() {
@@ -97,8 +97,8 @@ export class DiscussComponent implements OnInit, OnDestroy {
     this.sending.set(true);
 
     this.onSendMailSub = this.mailService.postNewMail().subscribe({
-      next: async (res: { status: string }) => {
-        if (res.status === 'success') {
+      next: async (res: { status: boolean; message: string }) => {
+        if (res.status) {
           /**
            * Mail can be sent, now calling EmailJS service->
            */
@@ -107,10 +107,7 @@ export class DiscussComponent implements OnInit, OnDestroy {
             await this.mailService.send(message!, email || undefined, name || undefined);
             this.done.set(true);
             this.form.reset();
-            this.alertService.showAlert(
-              this.lang() === 'HU' ? 'Üzenet elküldve! Köszönöm!' : 'Message sent! Thank you!',
-              { position: 'bottom' },
-            );
+            this.alertService.showAlert(res.message);
           } catch (e: any) {
             this.error.set(this.lang() === 'HU' ? 'Hiba történt!' : 'Some error occured!');
             this.alertService.showAlert(
@@ -124,21 +121,11 @@ export class DiscussComponent implements OnInit, OnDestroy {
           }
           return;
         } else {
-          this.alertService.showAlert(
-            this.lang() === 'HU'
-              ? 'Kérlek, várj egy kicsit a következő üzenet küldésével!'
-              : 'Please, wait a bit, till you send the next message!',
-            { position: 'bottom' },
-          );
+          this.alertService.showAlert(res.message, { position: 'bottom' });
         }
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
-        this.alertService.showAlert(
-          this.lang() === 'HU'
-            ? 'Az üzenetküldés sikertelen! Kérlek, próbálkozz kicsit később!'
-            : 'Could not send message! Please, try again a bit later!',
-          { position: 'bottom' },
-        );
+        this.alertService.showAlert(error.error.message);
         return error;
       },
     });

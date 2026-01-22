@@ -49,7 +49,7 @@
       <p [style.color]="'var(--primary-green)'">{{ 'DISCUSS_SENT' | translate }}</p>
     }
     @if (!canMailBeSent()) {
-      <p [style.color]="'var(--primary-green)'">{{ 'DISCUSS_WAIT_24H' | translate }}</p>
+      <p [style.color]="'var(--dark-brown)'">{{ warningMessage() }}</p>
     }
     @if (error()) {
       <p [style.color]="'var(--dark-brown)'">{{ error() }}</p>

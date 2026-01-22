@@ -12,12 +12,17 @@ export class FeedbackMailService {
 
   constructor(private http: HttpClient) {}
 
-  public canMailBeSent(): Observable<{ status: string }> {
-    return this.http.get<{ status: string }>(`${environment.apiURL}/api/checkEmailSend`);
+  public canMailBeSent(): Observable<{ status: boolean; warningMessage: string | undefined }> {
+    return this.http.get<{ status: boolean; warningMessage: string | undefined }>(
+      `${environment.apiURL}/api/checkEmailSend`,
+    );
   }
 
-  public postNewMail(): Observable<{ status: string }> {
-    return this.http.post<{ status: string }>(`${environment.apiURL}/api/postNewMail`, {});
+  public postNewMail(): Observable<{ status: boolean; message: string }> {
+    return this.http.post<{ status: boolean; message: string }>(
+      `${environment.apiURL}/api/postNewMail`,
+      {},
+    );
   }
 
   async send(message: string, fromEmail?: string, fromName?: string): Promise<void> {
