@@ -39,5 +39,6 @@
   "Sauron": "Sauron",
   "Aragorn": "Aragorn",
   "Gollum": "Gollum",
-  "TYPE_MESSAGE": "Type message..."
+  "TYPE_MESSAGE": "Type message...",
+  "THINKING": " is thinking..."
 }

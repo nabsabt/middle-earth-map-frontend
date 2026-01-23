@@ -39,5 +39,6 @@
   "Sauron": "Szauron",
   "Aragorn": "Aragorn",
   "Gollum": "Gollam",
-  "TYPE_MESSAGE": "Írj valamit..."
+  "TYPE_MESSAGE": "Írj valamit...",
+  "THINKING": " épp gépel..."
 }

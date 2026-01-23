@@ -15,11 +15,20 @@
 
   @if (selectedCharacter()) {
     <div class="chat-container">
-      <h3>Chat with {{ selectedCharacter() }} {{ loading() }}</h3>
+      <h3>Chat with {{ selectedCharacter() }}</h3>
       <div class="chat-surface">
         <!--Chat history surface-->
-        <div class="chat-box">
-          <p>sent text</p>
+        <div #chatBox id="chatBox" class="chat-box">
+          @for (msg of messages(); track msg) {
+            <div class="chat-bubble" [ngClass]="msg.isResponse ? 'reply' : 'request'">
+              <p>{{ msg.text }}</p>
+            </div>
+          }
+          @if (loading()) {
+            <div class="thinking-bubble">
+              <em>{{ selectedCharacter() }}{{ 'THINKING' | translate }}</em>
+            </div>
+          }
         </div>
         <!--Chat input surface-->
         <form [formGroup]="form" (ngSubmit)="sendChatMessage()">
