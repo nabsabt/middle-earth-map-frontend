@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { sign } from 'crypto';
 
 @Component({
   selector: 'chat',
@@ -30,10 +31,13 @@ import { CommonModule } from '@angular/common';
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('chatBox') chatBox?: ElementRef<HTMLElement>;
+  private isChatAllowedSub: Subscription;
 
   private sendMessageSub: Subscription;
-
+  private alertService = inject(AlertService);
   private chatService = inject(ChatService);
+
+  public isChatAllowed = signal<boolean>(false);
   public characters = signal<Array<AI_CHAR>>([
     'Aragorn',
     'Gandalf',
@@ -60,7 +64,19 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.scrollToBottom();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isChatAllowedSub = this.chatService.isChatMessageAllowed().subscribe({
+      next: (res: { isAllowed: boolean }) => {
+        this.isChatAllowed.set(res.isAllowed);
+      },
+      error: (error: HttpErrorResponse): HttpErrorResponse => {
+        this.alertService.showAlert(error.error.message, {
+          position: 'bottom',
+        });
+        return error;
+      },
+    });
+  }
 
   private scrollToBottom() {
     requestAnimationFrame(() => {
@@ -96,7 +112,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         error: (error: HttpErrorResponse): HttpErrorResponse => {
           this.loading.set(false);
-
+          this.alertService.showAlert(error.error.message, {
+            position: 'bottom',
+          });
           return error;
         },
       });
@@ -104,6 +122,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.selectedCharacter.set(undefined);
     this.sendMessageSub?.unsubscribe();
+    this.isChatAllowedSub?.unsubscribe();
     this.messages.set([]);
   }
 }

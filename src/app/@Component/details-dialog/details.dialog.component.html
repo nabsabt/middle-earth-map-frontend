@@ -15,13 +15,13 @@
         <!--Subtitle-->
         @if (selectedObject()?.length) {
           <h3>
-            {{ selectedObject()?.length?.[unit() === 'metric' ? 'Km' : 'Mi'] }}
+            {{ selectedObject()?.length?.[unit() === 'metric' ? 'Km' : 'Mi'] | number }}
             {{ unit() === 'metric' ? 'km' : 'mi' }}
           </h3>
         }
         @if (selectedObject()?.area) {
           <h3>
-            {{ selectedObject()?.area?.[unit() === 'metric' ? 'sqKm' : 'sqMi'] }}
+            {{ selectedObject()?.area?.[unit() === 'metric' ? 'sqKm' : 'sqMi'] | number }}
             {{ unit() === 'metric' ? 'km' : 'mi' }}<sup>2</sup>
           </h3>
         }

@@ -12,8 +12,8 @@
   "METRIC": "metrikus",
   "IMPERIAL": "birodalmi",
 
-  "ABOUT_GENERAL": "Az oldal célja, hogy Tolkien megalkotott világát életre keltse a képernyőn. A webes térképes alkalmazás bemutatja Középfölde legismertebb helyszíneit és királyságait a látogatók számára. A projekt teljes mértékben rajongói alkotás; minden információ a könyvekből és a filmekből származik.\n\nA felhasznált vizuális anyagok nem az én tulajdonomat képezik.\nA galériában megjelenített képek a Warner Bros. tulajdonát képezik.\nAz alaptérképet <a href='https://www.instagram.com/takie_pany/' target='_blank' rel='noopener noreferrer'>kapitan_ryjek</a> készítette.\nAz Egy Gyűrű 3D modelljét <a href='https://sketchfab.com/berzerkey' target='_blank' rel='noopener noreferrer'>berzerkey</a> készítette.",
-  "ABOUT_DETAILS": "A projekt Angular@21 (kliensoldal) és NestJS@10 (szerveroldal) felhasználásával készült. A térbeli adatok megjelenítéséért a MapLibre@5.15 felel. További részletekért tekintsd meg a <a href='https://github.com/nabsabt/' target='_blank' rel='noopener noreferrer'>GitHub profilomat</a>.",
+  "ABOUT_GENERAL": "Az oldal célja, hogy Tolkien csodálatos világát életre keltse a képernyőn. A webes térképes alkalmazás bemutatja Középfölde legismertebb helyszíneit és királyságait a látogatók számára. A projekt teljes mértékben rajongói alkotás; minden információ a könyvekből és a filmekből származik.\n\nA felhasznált vizuális anyagok nem az én tulajdonomat képezik.\nA galériában megjelenített képek a Warner Bros. tulajdona.\nAz alaptérkép <a href='https://www.instagram.com/takie_pany/' target='_blank' rel='noopener noreferrer'>kapitan_ryjek</a> rajza felhasználásával készült.\nAz Egy Gyűrű 3D modelljét <a href='https://sketchfab.com/berzerkey' target='_blank' rel='noopener noreferrer'>berzerkey</a> készítette.",
+  "ABOUT_DETAILS": "A projekt Angular@21 és NestJS@10 felhasználásával készült. A térbeli adatok megjelenítéséért a MapLibre@5.15 felel. A raszteres térképi elemek (alaptérkép) georeferálása, illetve a vektorgrafikus fedvények elkészítése QGIS-ben történt. A Chat funkcióhoz a gpt-4.1 OpenAI MI modul került felhasználásra.",
 
   "DICUSS_INFO": "Van bármi javaslatod az app fejlesztését illetően? Valami elírást, téves infót találtál a térképi elemek leíró adatában? Esetleg csak szimplán üzenni szeretnél nekem? Dobj nyugodtan egy üzenetet!",
   "DISCUSS_MESSAGE": "Add ki magadból...",
@@ -33,7 +33,9 @@
   "DONATE_2EURO": "egy pipára valóra a Déli Fertály legjobb dohányából",
   "DONATE_5EURO": "barátom...neked jár tisztelet!",
 
+  "CHAT_NOT_ALLOWED": "Túl sok üzenetet küldtél, térj vissza kicsit később! Középfölde népének is kijár egy kis pihenés!",
   "CHAT_CHARSELECT_LABEL": "Válassz valakit",
+  "CHAT_WITH": "Beszélgess vele: ",
   "Illuvatar": "Eru Illuvatar",
   "Gandalf": "Gandalf",
   "Sauron": "Szauron",

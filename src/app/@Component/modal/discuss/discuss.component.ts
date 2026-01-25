@@ -47,7 +47,7 @@ export class DiscussComponent implements OnInit, OnDestroy {
 
   constructor() {}
   ngOnInit(): void {
-    this.onCheckMailSub = this.mailService.canMailBeSent().subscribe({
+    this.onCheckMailSub = this.mailService.isMailSendingAllowed().subscribe({
       next: (res: { status: boolean; warningMessage: string | undefined }) => {
         this.canMailBeSent.set(res.status);
 

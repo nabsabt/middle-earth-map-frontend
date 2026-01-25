@@ -21,13 +21,13 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { GISObject, Units } from '../../@Interface/maproot.interface';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
-import { isPlatformBrowser } from '@angular/common';
+import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'details-dialog',
   templateUrl: './details.dialog.component.html',
   styleUrl: './details.dialog.component.scss',
-  imports: [TranslateModule],
+  imports: [TranslateModule, DecimalPipe],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

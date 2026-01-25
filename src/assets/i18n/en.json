@@ -13,7 +13,7 @@
   "IMPERIAL": "imperial",
 
   "ABOUT_GENERAL": "The goal of this page is to bring Tolkien’s wonderful world to life on screen. It introduces the most famous locations and kingdoms of Middle-earth to visitors through a web map application. This project is purely fan-made; all information is based on the books and the movies.\n\nI do not own any of the visual materials used.\nThe images shown in the gallery are the property of Warner Bros.\nThe basemap was created by <a href='https://www.instagram.com/takie_pany/' target='_blank'>kapitan_ryjek</a>.\nThe 3D model of the One Ring was created by <a href='https://sketchfab.com/berzerkey' target='_blank'>berzerkey</a>.",
-  "ABOUT_DETAILS": "This project was built using Angular@21 (client-side) and NestJS@10 (server-side). Spatial data visualization is handled by MapLibre@5.15. For further details, please visit my <a href='https://github.com/nabsabt/' target='_blank'>GitHub profile</a>.",
+  "ABOUT_DETAILS": "This project was built using <a href='https://angular.dev/events/v21' target='_blank'>Angular @21</a> and <a href='https://nestjs.com/' target='_blank'>NestJS @10</a>. Spatial data visualization is handled by <a href='https://maplibre.org/maplibre-gl-js/docs/' target='_blank'>MapLibre v5.15</a>. The georeferencing of the raster basemap and the creation of the vector layers were processed in QGIS. For the Chat function, the gpt-4.1 OpenAI model is being used.",
 
   "DICUSS_INFO": "Do you have any recommendation regarding the development of this web app? Did I miss some detail in the description of a location of Middle Earth? Or just wanna share something with me? Please, feel free to send me a message!",
   "DISCUSS_MESSAGE": "Tell me...",
@@ -33,7 +33,9 @@
   "DONATE_2EURO": "for a pack of pipe weed from the South Farthing",
   "DONATE_5EURO": "my friend...you bow to no one!",
 
+  "CHAT_NOT_ALLOWED": "You chatted too much! Please, come back a bit later, folks of Middle Earth need some rest, too!",
   "CHAT_CHARSELECT_LABEL": "Choose someone",
+  "CHAT_WITH": "Chat with ",
   "Illuvatar": "Eru Illuvatar",
   "Gandalf": "Gandalf",
   "Sauron": "Sauron",

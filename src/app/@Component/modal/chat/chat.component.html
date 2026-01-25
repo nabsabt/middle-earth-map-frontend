@@ -1,58 +1,66 @@
 <div class="wrapper">
-  <!--Chat selection-->
-  @if (!selectedCharacter()) {
-    <div class="select-char">
-      <mat-form-field>
-        <mat-label>{{ 'CHAT_CHARSELECT_LABEL' | translate }}</mat-label>
-        <mat-select (selectionChange)="onCharacterSelected($event.value)">
-          @for (char of characters(); track char) {
-            <mat-option [value]="char">{{ char | translate }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
+  @if (!isChatAllowed()) {
+    <p class="chat-not-allowed">{{ 'CHAT_NOT_ALLOWED' | translate }}</p>
   }
-
-  @if (selectedCharacter()) {
-    <div class="chat-container">
-      <h3>Chat with {{ selectedCharacter() }}</h3>
-      <div class="chat-surface">
-        <!--Chat history surface-->
-        <div #chatBox id="chatBox" class="chat-box">
-          @for (msg of messages(); track msg) {
-            <div class="chat-bubble" [ngClass]="msg.isResponse ? 'reply' : 'request'">
-              <p>{{ msg.text }}</p>
-            </div>
-          }
-          @if (loading()) {
-            <div class="thinking-bubble">
-              <em>{{ selectedCharacter() }}{{ 'THINKING' | translate }}</em>
-            </div>
-          }
-        </div>
-        <!--Chat input surface-->
-        <form [formGroup]="form" (ngSubmit)="sendChatMessage()">
-          <div class="me-chat-input-field">
-            <input
-              class="formfield me-chat__input"
-              formControlName="message"
-              type="text"
-              placeholder="{{ 'TYPE_MESSAGE' | translate }}"
-              [value]="messageInputText()"
-              (input)="messageInputText.set($any($event.target).value)"
-            />
-            <!--Label indicating typed char numbers (max is 400)-->
-            <em
-              class="char-number-info"
-              [style.color]="messageInputText().length < 400 ? 'green' : 'red'"
-              >{{ 400 - messageInputText().length }}</em
-            >
-            <button [disabled]="messageInputText().length < 3" class="control-panel-button-pill">
-              <img src="assets/icons/send.svg" />
-            </button>
-          </div>
-        </form>
+  @if (isChatAllowed()) {
+    <!--Chat selection-->
+    @if (!selectedCharacter()) {
+      <div class="select-char">
+        <mat-form-field>
+          <mat-label>{{ 'CHAT_CHARSELECT_LABEL' | translate }}</mat-label>
+          <mat-select (selectionChange)="onCharacterSelected($event.value)">
+            @for (char of characters(); track char) {
+              <mat-option [value]="char">{{ char | translate }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       </div>
-    </div>
+    }
+
+    @if (selectedCharacter()) {
+      <div class="chat-container">
+        <h3>{{ 'CHAT_WITH' | translate }}{{ selectedCharacter() }}</h3>
+        <div class="chat-surface">
+          <!--Chat history surface-->
+          <div #chatBox id="chatBox" class="chat-box">
+            @for (msg of messages(); track msg) {
+              <div class="chat-bubble" [ngClass]="msg.isResponse ? 'reply' : 'request'">
+                <p>{{ msg.text }}</p>
+              </div>
+            }
+            @if (loading()) {
+              <div class="thinking-bubble">
+                <em>{{ selectedCharacter() }}{{ 'THINKING' | translate }}</em>
+              </div>
+            }
+          </div>
+          <!--Chat input surface-->
+          <form [formGroup]="form" (ngSubmit)="sendChatMessage()">
+            <div class="me-chat-input-field">
+              <input
+                class="formfield me-chat__input"
+                formControlName="message"
+                type="text"
+                placeholder="{{ 'TYPE_MESSAGE' | translate }}"
+                [value]="messageInputText()"
+                (input)="messageInputText.set($any($event.target).value)"
+              />
+              <!--Label indicating typed char numbers (max is 400)-->
+              <em
+                class="char-number-info"
+                [style.color]="messageInputText().length < 400 ? 'green' : 'red'"
+                >{{ 400 - messageInputText().length }}</em
+              >
+              <button
+                [disabled]="messageInputText().length < 3 || messageInputText().length > 400"
+                class="control-panel-button-pill"
+              >
+                <img src="assets/icons/send.svg" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    }
   }
 </div>

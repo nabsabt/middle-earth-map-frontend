@@ -12,7 +12,10 @@ export class FeedbackMailService {
 
   constructor(private http: HttpClient) {}
 
-  public canMailBeSent(): Observable<{ status: boolean; warningMessage: string | undefined }> {
+  public isMailSendingAllowed(): Observable<{
+    status: boolean;
+    warningMessage: string | undefined;
+  }> {
     return this.http.get<{ status: boolean; warningMessage: string | undefined }>(
       `${environment.apiURL}/api/checkEmailSend`,
     );

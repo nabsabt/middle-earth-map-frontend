@@ -41,7 +41,11 @@
       }
     }
 
-    <button class="primary-btn" type="submit" [disabled]="sending() || !canMailBeSent()">
+    <button
+      class="primary-btn"
+      type="submit"
+      [disabled]="sending() || !canMailBeSent() || form.invalid"
+    >
       {{ (sending() ? 'DISCUSS_SENDING_BUTTON' : 'DISCUSS_SEND_BUTTON') | translate }}
     </button>
 
