@@ -6,9 +6,4 @@ export const environment = {
   tileserver_BaseMap: `http://localhost:8080/data/basemap/{z}/{x}/{y}.png`,
   //basemap, when testing on phone:
   //tileserver_BaseMap: 'http://192.168.0.155:8080/data/basemap/{z}/{x}/{y}.png',
-  emailjs: {
-    publicKey: 'nRmMqMX6tFgKJVQE8',
-    serviceId: 'service_0i7h32w',
-    templateId: 'template_7rr2itc',
-  },
 };

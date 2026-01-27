@@ -19,7 +19,7 @@
 
     @if (selectedCharacter()) {
       <div class="chat-container">
-        <h3>{{ 'CHAT_WITH' | translate }}{{ selectedCharacter() }}</h3>
+        <h3>{{ 'CHAT_WITH' | translate }}{{ selectedCharacter()! | translate }}</h3>
         <div class="chat-surface">
           <!--Chat history surface-->
           <div #chatBox id="chatBox" class="chat-box">

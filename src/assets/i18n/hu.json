@@ -13,7 +13,9 @@
   "IMPERIAL": "birodalmi",
 
   "ABOUT_GENERAL": "Az oldal célja, hogy Tolkien csodálatos világát életre keltse a képernyőn. A webes térképes alkalmazás bemutatja Középfölde legismertebb helyszíneit és királyságait a látogatók számára. A projekt teljes mértékben rajongói alkotás; minden információ a könyvekből és a filmekből származik.\n\nA felhasznált vizuális anyagok nem az én tulajdonomat képezik.\nA galériában megjelenített képek a Warner Bros. tulajdona.\nAz alaptérkép <a href='https://www.instagram.com/takie_pany/' target='_blank' rel='noopener noreferrer'>kapitan_ryjek</a> rajza felhasználásával készült.\nAz Egy Gyűrű 3D modelljét <a href='https://sketchfab.com/berzerkey' target='_blank' rel='noopener noreferrer'>berzerkey</a> készítette.",
-  "ABOUT_DETAILS": "A projekt Angular@21 és NestJS@10 felhasználásával készült. A térbeli adatok megjelenítéséért a MapLibre@5.15 felel. A raszteres térképi elemek (alaptérkép) georeferálása, illetve a vektorgrafikus fedvények elkészítése QGIS-ben történt. A Chat funkcióhoz a gpt-4.1 OpenAI MI modul került felhasználásra.",
+  "ABOUT_DETAILS": "A projekt <a href='https://angular.dev/events/v21' target='_blank'>Angular @21</a> és <a href='https://nestjs.com/' target='_blank'>NestJS @10</a> felhasználásával készült. A térbeli adatok megjelenítéséért a <a href='https://maplibre.org/maplibre-gl-js/docs/' target='_blank'>MapLibre @5.15</a> felel. A raszteres térképi elemek (alaptérkép) georeferálása, illetve a vektorgrafikus fedvények elkészítése QGIS-ben történt. A Chat funkcióhoz a gpt-4.1 OpenAI MI modul került felhasználásra.",
+  "ABOUT_SUGGESTION": "Amennyiben érdekel a Gyűrűk Ura világa, <a href='https://www.youtube.com/@kritikalandor97/videos' target='_blank'>Kritikalandor YouTube oldalán</a> rengeteg érdekes videót találsz a témában.",
+  "ABOUT_PS": "Ezt az oldalt <a href='https://nagybenceev.eu' target='_blank'>Bence</a> készítette.",
 
   "DICUSS_INFO": "Van bármi javaslatod az app fejlesztését illetően? Valami elírást, téves infót találtál a térképi elemek leíró adatában? Esetleg csak szimplán üzenni szeretnél nekem? Dobj nyugodtan egy üzenetet!",
   "DISCUSS_MESSAGE": "Add ki magadból...",
@@ -28,7 +30,7 @@
   "DISCUSS_FIELD_MINLENGTH": "Minimum karakter: ",
   "DISCUSS_EMAIL_FIELD_INVALID": "Helytelen e-mail formátum!",
 
-  "DONATE_DESCRIPTION": "Az app fejlesztése pusztán Tolkien világa iránti szeretetem okán is egy élmény. Amennyiben időm engedi, további funkciókkal tervezem bővíteni. Azonban az üzemeltetés (VPS+Domain bérlés, meg persze az idő) sajnos jár némi kiadással. Bár látogatásod már önmagában megtisztelő, amennyiben támogatni kívánod munkám, azért külön hálával tartozom!",
+  "DONATE_DESCRIPTION": "Az app fejlesztése pusztán Tolkien világa iránti szeretetem okán is egy élmény. Amennyiben időm engedi, további funkciókkal tervezem bővíteni. Azonban az üzemeltetés (VPS, Domain bérlés, OpenAI szolgáltatás, meg persze az idő) sajnos jár némi kiadással. Bár látogatásod már önmagában megtisztelő, amennyiben támogatni kívánod munkám, azért külön hálával tartozom!",
   "DONATE_1EURO": "a második reggelire",
   "DONATE_2EURO": "egy pipára valóra a Déli Fertály legjobb dohányából",
   "DONATE_5EURO": "barátom...neked jár tisztelet!",

@@ -5,4 +5,12 @@
   <div class="details">
     <p [innerHTML]="'ABOUT_DETAILS' | translate"></p>
   </div>
+  @if (translateService.currentLang === 'hu') {
+    <div class="suggestion">
+      <p [innerHTML]="'ABOUT_SUGGESTION' | translate"></p>
+    </div>
+  }
+  <div class="ps">
+    <p [innerHTML]="'ABOUT_PS' | translate"></p>
+  </div>
 </div>

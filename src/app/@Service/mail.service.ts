@@ -6,10 +6,6 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class FeedbackMailService {
-  private readonly serviceId = environment.emailjs.serviceId;
-  private readonly templateId = environment.emailjs.templateId;
-  private readonly publicKey = environment.emailjs.publicKey;
-
   constructor(private http: HttpClient) {}
 
   public isMailSendingAllowed(): Observable<{
@@ -28,7 +24,20 @@ export class FeedbackMailService {
     );
   }
 
-  async send(message: string, fromEmail?: string, fromName?: string): Promise<void> {
+  public fetchEmailJSKeys(): Observable<{
+    result: { publicKey: string; serviceId: string; templateId: string };
+  }> {
+    return this.http.get<{
+      result: { publicKey: string; serviceId: string; templateId: string };
+    }>(`${environment.apiURL}/api/getEmailJSKeys`);
+  }
+
+  async send(
+    emailJSparams: { publicKey: string; serviceId: string; templateId: string },
+    message: string,
+    fromEmail?: string,
+    fromName?: string,
+  ): Promise<void> {
     const trimmed = message?.trim();
     if (!trimmed) throw new Error('Message is empty');
 
@@ -39,8 +48,8 @@ export class FeedbackMailService {
       sent_at: new Date().toISOString(),
     };
 
-    await emailjs.send(this.serviceId, this.templateId, params, {
-      publicKey: this.publicKey,
+    await emailjs.send(emailJSparams.serviceId, emailJSparams.templateId, params, {
+      publicKey: emailJSparams.publicKey,
     });
   }
 }

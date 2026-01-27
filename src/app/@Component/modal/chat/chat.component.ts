@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -19,7 +18,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { sign } from 'crypto';
 
 @Component({
   selector: 'chat',
@@ -60,9 +58,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   });
 
   constructor() {}
-  ngAfterViewInit(): void {
-    this.scrollToBottom();
-  }
 
   ngOnInit(): void {
     this.isChatAllowedSub = this.chatService.isChatMessageAllowed().subscribe({
@@ -76,6 +71,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
         return error;
       },
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
   }
 
   private scrollToBottom() {

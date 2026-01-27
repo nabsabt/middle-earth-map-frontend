@@ -43,6 +43,17 @@ body {
   font-family: Cinzel;
 }
 
+a {
+  transition: 200ms;
+  //text-decoration: none;
+  color: var(--dark-grey);
+  font-weight: 600;
+}
+a:hover {
+  transition: 200ms;
+  color: var(--black);
+  font-weight: 800;
+}
 :root {
   --mobile-breakpoint: 768px;
   --primary-green: #1e3c2e;
@@ -139,6 +150,46 @@ body {
     height: 32px;
   }
 }
+
+.lang-selector-button {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition: 300ms;
+  height: 25px;
+  min-width: 35px;
+  padding: 0;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    transition: 300ms;
+    opacity: 0.8;
+  }
+
+  &:active,
+  &.active {
+    transition: 300ms;
+
+    opacity: 1;
+
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.lang-hu {
+  @extend .lang-selector-button;
+  background-image: url('assets/icons/flag-hu.svg');
+}
+.lang-en {
+  @extend .lang-selector-button;
+  background-image: url('assets/icons/flag-en.svg');
+}
+
 .primary-btn {
   height: 25px;
   width: auto;

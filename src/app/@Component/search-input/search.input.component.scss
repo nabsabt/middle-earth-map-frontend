@@ -23,7 +23,10 @@
   backdrop-filter: blur(2px);
 
   /* smooth animation */
-  transition: transform 140ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  transition:
+    transform 140ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
   button {
     margin: 0 1rem;
   }
@@ -72,7 +75,10 @@
   padding: 0;
   user-select: none;
 
-  transition: background-color 140ms ease, transform 140ms ease, opacity 140ms ease;
+  transition:
+    background-color 140ms ease,
+    transform 140ms ease,
+    opacity 140ms ease;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.06);

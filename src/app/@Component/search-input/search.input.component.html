@@ -22,9 +22,12 @@
         X
       </button>
     }
-    <button (click)="changeLanguage()" class="control-panel-button-pill">
-      {{ changeToLangValue() }}
-    </button>
+
+    <button
+      (click)="changeLanguage()"
+      class="lang-selector-button"
+      [ngClass]="changeToLangValue() === 'hu' ? 'lang-hu' : 'lang-en'"
+    ></button>
   </div>
 
   @if (searchResults().length > 0 && value().length !== 0) {

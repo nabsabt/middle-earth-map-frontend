@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'about',
@@ -9,5 +9,5 @@ import { TranslateModule } from '@ngx-translate/core';
   providers: [],
 })
 export class AboutComponent {
-  constructor() {}
+  constructor(public translateService: TranslateService) {}
 }

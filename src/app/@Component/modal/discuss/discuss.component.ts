@@ -23,6 +23,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiscussComponent implements OnInit, OnDestroy {
+  private onFetchEmailJSKeysSub: Subscription;
   private onCheckMailSub: Subscription;
   private onSendMailSub: Subscription;
 
@@ -39,6 +40,11 @@ export class DiscussComponent implements OnInit, OnDestroy {
   );
 
   public canMailBeSent = signal<boolean>(true);
+  private mailJSParams = signal<{ publicKey: string; serviceId: string; templateId: string }>({
+    publicKey: '',
+    serviceId: '',
+    templateId: '',
+  });
   public warningMessage = signal<string | undefined>('');
 
   public sending = signal<boolean>(false);
@@ -58,6 +64,18 @@ export class DiscussComponent implements OnInit, OnDestroy {
         }
 
         !res.status ? this.warningMessage.set(res.warningMessage) : '';
+        if (res.status) {
+          this.onFetchEmailJSKeysSub = this.mailService.fetchEmailJSKeys().subscribe({
+            next: (res: {
+              result: { publicKey: string; serviceId: string; templateId: string };
+            }) => {
+              this.mailJSParams.set(res.result);
+            },
+            error: (error: HttpErrorResponse): HttpErrorResponse => {
+              return error;
+            },
+          });
+        }
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
         return error;
@@ -104,7 +122,12 @@ export class DiscussComponent implements OnInit, OnDestroy {
            */
           try {
             const { message, email, name } = this.form.value;
-            await this.mailService.send(message!, email || undefined, name || undefined);
+            await this.mailService.send(
+              this.mailJSParams(),
+              message!,
+              email || undefined,
+              name || undefined,
+            );
             this.done.set(true);
             this.form.reset();
             this.alertService.showAlert(res.message);
@@ -134,5 +157,6 @@ export class DiscussComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.onCheckMailSub?.unsubscribe();
     this.onSendMailSub?.unsubscribe();
+    this.onFetchEmailJSKeysSub?.unsubscribe();
   }
 }
