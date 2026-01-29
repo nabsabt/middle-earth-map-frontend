@@ -51,5 +51,5 @@ export const PATHS_PAINT_VALUES = {
 
 export const PATHS_PSEUDOLINE_PAINT_VALUES = {
   'line-color': 'rgba(20,240,30,0)',
-  'line-width': ['interpolate', ['linear'], ['zoom'], 4, 14, 16, 10],
+  'line-width': ['interpolate', ['linear'], ['zoom'], 4, 19, 16, 15],
 } as any;
