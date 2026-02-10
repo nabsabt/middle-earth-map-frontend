@@ -7,7 +7,6 @@ An interactive Middle-Earth map built with **Angular** + **MapLibre**, featuring
 [![Angular](https://img.shields.io/badge/Angular-v21%0B-red)](#)
 [![MapLibre](https://img.shields.io/badge/MapLibre-GL%20JS-blue)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5%2B-3178C6)](#)
-[![License](https://img.shields.io/badge/License-MIT-green)](#license)
 
 </div>
 
