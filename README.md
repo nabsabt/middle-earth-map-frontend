@@ -1,59 +1,33 @@
-# Frontend
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
+# 🗺️ Middle-earth Map (Frontend)
 
-## Development server
+An interactive Middle-Earth map built with **Angular** + **MapLibre**, featuring custom vector-graphic layers (created in QGIS), search function, and a clean, fast UI.
 
-To start a local development server, run:
+[![Angular](https://img.shields.io/badge/Angular-v21%0B-red)](#)
+[![MapLibre](https://img.shields.io/badge/MapLibre-GL%20JS-blue)](#)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5%2B-3178C6)](#)
 
-```bash
-ng serve
-```
+</div>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Interactive map** powered by MapLibre GL JS
+- **Custom vector layers** (areas / paths / places) with styling per layer
+- **Markers & icons** for locations (custom SVG/PNG assets)
+- **Search** (client-side UI, using pre-defined keywords in the backend)
+- **Responsive layout** (desktop + mobile)
+- **i18n-ready** UI (e.g. EN / HU)
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🧱 Tech Stack
 
-```bash
-ng generate --help
-```
+- **Angular** (standalone components / modern Angular patterns)
+- **MapLibre GL JS**
+- **TypeScript**
 
-## Building
+---
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
