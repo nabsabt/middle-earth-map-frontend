@@ -5,9 +5,9 @@
   "PATHS": "útvonalak",
   "AREAS": "területek",
   "PLACES": "helyszínek",
-  "DISCUSS": "vélemény",
-  "ABOUT": "infó",
-  "DONATE": "adomány",
+  "DISCUSS": "Vélemény",
+  "ABOUT": "Infó",
+  "DONATE": "Adomány",
 
   "METRIC": "metrikus",
   "IMPERIAL": "birodalmi",
@@ -34,6 +34,8 @@
   "DONATE_1EURO": "a második reggelire",
   "DONATE_2EURO": "egy pipára valóra a Déli Fertály legjobb dohányából",
   "DONATE_5EURO": "barátom...neked jár tisztelet!",
+
+  "QUIZ": "Kvíz",
 
   "CHAT_NOT_ALLOWED": "Túl sok üzenetet küldtél, térj vissza kicsit később! Középfölde népének is kijár egy kis pihenés!",
   "CHAT_CHARSELECT_LABEL": "Válassz valakit",

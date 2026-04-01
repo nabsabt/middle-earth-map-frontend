@@ -5,12 +5,20 @@ import { AboutComponent } from './about/about.component';
 import { DiscussComponent } from './discuss/discuss.component';
 import { DonateComponent } from './donate/donate.component';
 import { ChatComponent } from './chat/chat.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @Component({
   selector: 'modal',
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
-  imports: [TranslateModule, AboutComponent, DiscussComponent, DonateComponent, ChatComponent],
+  imports: [
+    TranslateModule,
+    AboutComponent,
+    DiscussComponent,
+    DonateComponent,
+    ChatComponent,
+    QuizComponent,
+  ],
   providers: [],
 })
 export class ModalComponent implements OnInit, OnDestroy {

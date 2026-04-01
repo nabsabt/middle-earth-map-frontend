@@ -3,15 +3,12 @@
 <navbar
   (selectedObjID)="selectGISFeature($event, false)"
   (layerToToggle)="toggleLayers($event)"
-  (modalToggle)="toggleModal($event)"
 ></navbar>
 
-<div class="control-panel">
-  <div class="control-panel-group AI-chat">
-    <button (click)="toggleModal('chat')" class="control-panel-button-pill-large">
-      <img src="assets/icons/chat_black.svg" />
-    </button>
-  </div>
+<side-menu (modalToggle)="toggleModal($event)"></side-menu>
+
+<div class="map-control-panel">
+  <!--Units-->
   <div class="control-panel-group metric">
     <button (click)="onChangeUnits()" class="control-panel-button">
       {{ units().toUpperCase() | translate }}

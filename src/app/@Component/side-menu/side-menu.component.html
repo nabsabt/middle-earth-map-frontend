@@ -1,0 +1,51 @@
+<div
+  class="side-menu-container"
+  [ngClass]="isButtonsContainerOpened() ? 'side-menu-opened' : 'side-menu-closed'"
+>
+  <div class="toggle-container">
+    <button class="control-panel-button-pill" (click)="toggleButtonsContainer()">
+      <img src="assets/icons/sidemenu-open.svg" />
+    </button>
+  </div>
+  <div class="buttons-container" [ngClass]="isButtonsContainerOpened() ? 'opened' : 'closed'">
+    <!--Quiz-->
+    <div>
+      <button (click)="onOpenModal('quiz')" class="side-menu-button-pill">
+        <span>{{ 'QUIZ' | translate }}</span>
+        <img src="assets/icons/quiz_black.svg" />
+      </button>
+    </div>
+
+    <!--Chat-->
+    <div>
+      <button (click)="onOpenModal('chat')" class="side-menu-button-pill">
+        <span>Chat</span>
+        <img src="assets/icons/chat_black.svg" />
+      </button>
+    </div>
+
+    <!--About-->
+    <div>
+      <button (click)="onOpenModal('about')" class="side-menu-button-pill">
+        <span>{{ 'ABOUT' | translate }}</span>
+        <img src="assets/icons/info.svg" />
+      </button>
+    </div>
+
+    <!--Discussion-->
+    <div>
+      <button (click)="onOpenModal('discuss')" class="side-menu-button-pill">
+        <span>{{ 'DISCUSS' | translate }}</span>
+        <img src="assets/icons/discuss.svg" />
+      </button>
+    </div>
+
+    <!--Donate-->
+    <div>
+      <button (click)="onOpenModal('donate')" class="side-menu-button-pill">
+        <span>{{ 'DONATE' | translate }}</span>
+        <img src="assets/icons/donate.svg" />
+      </button>
+    </div>
+  </div>
+</div>

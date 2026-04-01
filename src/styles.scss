@@ -18,13 +18,8 @@ html {
   );
 }
 
-body {
-}
 @import 'photoswipe/style.css';
-body {
-  margin: 0;
-  height: 100%;
-}
+
 /* You can add global styles to this file, and also import other style files */
 //@import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -35,17 +30,19 @@ body {
   font-style: normal;
 }
 
+$mobile-breakpoint: 768px;
+
 body {
   min-height: 100vh; /* fallback */
   min-height: 100dvh; /* preferred */
   padding: 0;
   margin: 0;
   font-family: Cinzel;
+  overflow: hidden;
 }
 
 a {
   transition: 200ms;
-  //text-decoration: none;
   color: var(--dark-grey);
   font-weight: 600;
 }
@@ -54,8 +51,8 @@ a:hover {
   color: var(--black);
   font-weight: 800;
 }
+
 :root {
-  --mobile-breakpoint: 768px;
   --primary-green: #1e3c2e;
   --primary-green-hovered: #2e5c46;
   --primary-clicked: #ffc226;
@@ -63,6 +60,8 @@ a:hover {
   --primary-text-clicked: #1e3c2e;
 
   --secondary: #eddcb7;
+  --secondary-opaque: rgba(237, 220, 183, 0.4);
+  --secondary-opaque-hovered: rgba(215, 192, 143, 0.5);
   --secondary-hovered: #d7c08f;
   --secondary-clicked: #635639;
   --black: #202020;
@@ -141,10 +140,13 @@ a:hover {
   }
 }
 
-.control-panel-button-pill-large {
-  @extend .control-panel-button-pill;
+.side-menu-button-pill {
+  @extend .secondary-btn;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 40px;
-  width: 40px;
+  width: 95%;
   img {
     width: 32px;
     height: 32px;
@@ -277,4 +279,20 @@ a:hover {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #3d1811;
+}
+
+@media (min-width: $mobile-breakpoint) {
+  .primary-btn,
+  .secondary-btn {
+    font-size: 1rem;
+    padding: 0.5rem 1.3rem;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .primary-btn,
+  .secondary-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 1.3rem;
+  }
 }

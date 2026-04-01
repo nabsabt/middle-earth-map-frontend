@@ -24,6 +24,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DetailsDialogComponent } from '../details-dialog/details.dialog.component';
 import { ModalComponent } from '../modal/modal.component';
 import { AlertService } from '../../@Service/alert.service';
+import { SideMenu } from '../side-menu/side-menu.component';
 
 @Component({
   selector: 'map-root',
@@ -40,6 +41,7 @@ import { AlertService } from '../../@Service/alert.service';
     TranslateModule,
     DetailsDialogComponent,
     ModalComponent,
+    SideMenu,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

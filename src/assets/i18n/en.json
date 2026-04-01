@@ -5,9 +5,9 @@
   "PATHS": "paths",
   "AREAS": "areas",
   "PLACES": "places",
-  "DISCUSS": "discussion",
-  "ABOUT": "about",
-  "DONATE": "donate",
+  "DISCUSS": "Discussion",
+  "ABOUT": "About",
+  "DONATE": "Donate",
 
   "METRIC": "metric",
   "IMPERIAL": "imperial",
@@ -33,6 +33,8 @@
   "DONATE_1EURO": "for second breakfast",
   "DONATE_2EURO": "for a pack of pipe weed from the South Farthing",
   "DONATE_5EURO": "my friend...you bow to no one!",
+
+  "QUIZ": "Quiz",
 
   "CHAT_NOT_ALLOWED": "You chatted too much! Please, come back a bit later, folks of Middle Earth need some rest, too!",
   "CHAT_CHARSELECT_LABEL": "Choose someone",

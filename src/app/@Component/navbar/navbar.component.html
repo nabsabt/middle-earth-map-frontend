@@ -29,32 +29,5 @@
     >
       {{ 'PLACES' | translate }}
     </button>
-
-    <!--Discuss-->
-    <button
-      [class.active-button]="selectedNavbarControl() == 'discuss'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('discuss'); onOpenModal('discuss')"
-    >
-      {{ 'DISCUSS' | translate }}
-    </button>
-
-    <!--About-->
-    <button
-      [class.active-button]="selectedNavbarControl() == 'about'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('about'); onOpenModal('about')"
-    >
-      {{ 'ABOUT' | translate }}
-    </button>
-
-    <!--Donate-->
-    <button
-      [class.active-button]="selectedNavbarControl() == 'donate'"
-      class="secondary-btn"
-      (click)="toggleNavbarActiveButton('donate'); onOpenModal('donate')"
-    >
-      {{ 'DONATE' | translate }}
-    </button>
   </div>
 </div>

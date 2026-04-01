@@ -28,7 +28,7 @@ export interface GISObject {
 }
 
 export type LayerGroupKey = 'areas' | 'places' | 'paths';
-export type ModalType = 'discuss' | 'about' | 'donate' | 'chat';
+export type ModalType = 'discuss' | 'about' | 'donate' | 'chat' | 'quiz';
 export type NavbarControls =
   | 'areas'
   | 'places'
