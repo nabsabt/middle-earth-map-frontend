@@ -35,6 +35,12 @@
   "DONATE_5EURO": "my friend...you bow to no one!",
 
   "QUIZ": "Quiz",
+  "QUIZ_LEVEL_SELECT": "Difficulty level...",
+  "QUIZ_LEVEL_EASY": "Easy",
+  "QUIZ_LEVEL_MEDIUM": "Medium",
+  "QUIZ_LEVEL_HARD": "Hard",
+  "QUIZ_NEXT": "Next",
+  "QUIZ_FINISH": "Finish",
 
   "CHAT_NOT_ALLOWED": "You chatted too much! Please, come back a bit later, folks of Middle Earth need some rest, too!",
   "CHAT_CHARSELECT_LABEL": "Choose someone",

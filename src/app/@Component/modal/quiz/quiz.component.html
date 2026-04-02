@@ -1,3 +1,48 @@
 <div class="wrapper">
-  <h1>Kvíz modal</h1>
+  <!--Level selection-->
+  @if (!selectedLevel()) {
+    <div class="level-selection">
+      <mat-form-field>
+        <mat-label>{{ 'QUIZ_LEVEL_SELECT' | translate }}</mat-label>
+        <mat-select (selectionChange)="onLevelSelected($event.value)">
+          <mat-option [value]="1">{{ 'QUIZ_LEVEL_EASY' | translate }}</mat-option>
+          <mat-option [value]="2">{{ 'QUIZ_LEVEL_MEDIUM' | translate }}</mat-option>
+          <mat-option [value]="3">{{ 'QUIZ_LEVEL_HARD' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
+  @if (question()) {
+    <div class="question-answer-block">
+      <div class="question-div">
+        <span>{{ question()?.serial }}. {{ question()?.question }}</span>
+      </div>
+      <div class="options-div">
+        @for (opt of optionsArr; track opt[0]) {
+          <!-- <div class="options" (click)="onOptionSelected(+opt[0])" [ngClass]="optionClass(+opt[0])">
+            <span>{{ opt[1] }}</span>
+          </div> -->
+          <button
+            [disabled]="pickedOption()"
+            class="options"
+            (click)="onOptionSelected(+opt[0])"
+            [ngClass]="optionClass(+opt[0])"
+          >
+            <p>{{ opt[1] }}</p>
+          </button>
+        }
+      </div>
+    </div>
+  }
+  <div class="button-container">
+    @if (question()?.serial) {
+      <button
+        class="primary-btn next-button"
+        [disabled]="!pickedOption()"
+        (click)="question()!.serial < 10 ? getQuestion() : getResult()"
+      >
+        {{ question()!.serial < 10 ? ('QUIZ_NEXT' | translate) : ('QUIZ_FINISH' | translate) }}
+      </button>
+    }
+  </div>
 </div>

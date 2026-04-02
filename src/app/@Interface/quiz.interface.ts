@@ -36,14 +36,7 @@ export interface ClearedQuestion {
     3: string;
     4: string;
   };
-}
-
-export interface QuizUsers {
-  _id?: any;
-  ip: string;
-  questionsPassed: number;
-  passedPosIDs: Array<number>;
-  successfulQuestions: number;
+  serial: number;
 }
 
 export interface QuizResults {

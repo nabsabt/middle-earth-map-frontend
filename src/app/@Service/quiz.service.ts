@@ -14,12 +14,16 @@ export class QuizService {
     });
   }
 
-  public getAnswerResult(
+  public getResults(): Observable<QuizResults> {
+    return this.http.get<QuizResults>(`${environment.apiURL}/api/getQuizResults`);
+  }
+
+  public getIsCorrect(
     questionPOS: number,
     selectedOption: number,
-  ): Observable<{ isCorrect: boolean } | QuizResults> {
-    return this.http.get<{ isCorrect: boolean } | QuizResults>(
-      `${environment.apiURL}/api/getAnswerResult`,
+  ): Observable<{ correctAnswerNumber: number }> {
+    return this.http.get<{ correctAnswerNumber: number }>(
+      `${environment.apiURL}/api/getIsCorrect`,
       {
         params: { questionPOS: questionPOS, selectedOption: selectedOption },
       },

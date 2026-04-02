@@ -1,10 +1,74 @@
 .wrapper {
   padding: 0 1rem;
   height: fit-content;
+  min-height: 50dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   .general,
   .details,
   .suggestion,
   .ps {
     text-align: justify;
+  }
+
+  .question-answer-block {
+    min-height: 300px;
+    .question-div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      min-height: 120px;
+    }
+
+    .options-div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      .options {
+        font: inherit;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        text-align: center;
+        justify-content: center;
+        transition: 200ms;
+        margin: 0.5rem;
+        text-wrap: initial;
+        text-align: center;
+        border: 1px solid var(--dark-brown);
+        border-radius: 10px;
+        min-height: 3rem;
+        padding: 0.2rem;
+      }
+
+      .options:disabled {
+        cursor: default;
+      }
+      .options:not(:disabled):hover {
+        transition: 200ms;
+        background-color: var(--secondary-hovered);
+        transform: scale(1.03);
+      }
+
+      .correct {
+        background-color: var(--option-correct) !important;
+      }
+      .incorrect {
+        background-color: var(--option-incorrect) !important;
+      }
+    }
+  }
+
+  .next-button:disabled {
+    transition: 200ms;
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .options {
+    font-size: 0.8rem;
   }
 }

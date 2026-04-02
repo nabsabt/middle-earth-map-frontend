@@ -59,6 +59,9 @@ a:hover {
   --primary-text: #ffc226;
   --primary-text-clicked: #1e3c2e;
 
+  --option-incorrect: #b36464;
+  --option-correct: #40a576;
+
   --secondary: #eddcb7;
   --secondary-opaque: rgba(237, 220, 183, 0.4);
   --secondary-opaque-hovered: rgba(215, 192, 143, 0.5);
@@ -262,6 +265,7 @@ a:hover {
 
 ::-webkit-scrollbar {
   width: 12px;
+  height: 5px;
 }
 
 /* Track */

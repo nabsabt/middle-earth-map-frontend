@@ -1,6 +1,6 @@
 .navbar {
   position: absolute;
-  margin: 1rem;
+  padding: 1rem;
   display: flex;
   gap: 0.5rem;
   top: 0;
@@ -10,15 +10,14 @@
     margin-right: auto;
   }
   .user-controls-container {
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
     display: flex;
     align-items: center;
-    button {
-      margin: 0.2rem;
-    }
+    gap: 1rem;
   }
 }
-
 /* DESKTOP VIEW */
 @media (min-width: 931px) {
   .navbar {
@@ -32,36 +31,26 @@
 /* MOBILE VIEW */
 @media (max-width: 930px) {
   .navbar {
-    margin-left: auto;
-    margin-right: auto;
     z-index: 10;
+    display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+    justify-content: center;
+
+    .searchbar-container,
     .user-controls-container {
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .user-controls-container {
+      display: flex;
       flex-direction: row;
-      justify-content: center;
       flex-wrap: nowrap;
       overflow-x: auto;
-      /* Firefox */
-      scrollbar-width: none;
-
-      /* IE / Edge legacy */
-      -ms-overflow-style: none;
-
-      /* Chrome, Safari, Edge */
-      &::-webkit-scrollbar {
-        display: none;
-      }
-      :first-child {
-        margin-left: 1rem;
-      }
-      :last-child {
-        margin-right: 1rem;
-      }
+      justify-content: flex-start;
+      gap: 0.5rem;
+      max-width: 325px;
+      padding-bottom: 0.2rem;
     }
   }
 }
