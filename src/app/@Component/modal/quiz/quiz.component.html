@@ -12,16 +12,14 @@
       </mat-form-field>
     </div>
   }
-  @if (question()) {
+  <!--Question block-->
+  @if (question() && !result()) {
     <div class="question-answer-block">
       <div class="question-div">
         <span>{{ question()?.serial }}. {{ question()?.question }}</span>
       </div>
       <div class="options-div">
         @for (opt of optionsArr; track opt[0]) {
-          <!-- <div class="options" (click)="onOptionSelected(+opt[0])" [ngClass]="optionClass(+opt[0])">
-            <span>{{ opt[1] }}</span>
-          </div> -->
           <button
             [disabled]="pickedOption()"
             class="options"
@@ -32,6 +30,13 @@
           </button>
         }
       </div>
+    </div>
+  }
+  <!--Results block-->
+  @if (!question() && result()) {
+    <div class="results-block">
+      <h3>{{ result()?.percentage }}%</h3>
+      <em>{{ result()?.responseMessage }}</em>
     </div>
   }
   <div class="button-container">

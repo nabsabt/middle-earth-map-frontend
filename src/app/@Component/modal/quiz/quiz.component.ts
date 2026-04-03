@@ -31,6 +31,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   private getQuestionSub: Subscription;
   private getIsCorrectSub: Subscription;
   private getResultsSub: Subscription;
+  private onRemoveClientSub: Subscription;
 
   public selectedLevel = signal<1 | 2 | 3 | undefined>(undefined);
 
@@ -53,8 +54,8 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   public getQuestion() {
     this.getQuestionSub?.unsubscribe();
-    this.pickedOption.set(undefined);
-    this.correctAnswer.set(undefined);
+
+    this.resetQuestionProps();
     this.getQuestionSub = this.quizService.getQuestion(this.selectedLevel()!).subscribe({
       next: (res: ClearedQuestion) => {
         this.question.set(res);
@@ -81,11 +82,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   public getResult() {
     this.getResultsSub = this.quizService.getResults().subscribe({
       next: (res: QuizResults) => {
-        console.log('percentage: ', res.percentage);
-        console.log('overall text: ', res.responseMessage);
-        this.question.set(undefined);
-        this.pickedOption.set(undefined);
-        this.correctAnswer.set(undefined);
+        this.resetQuestionProps();
         this.result.set(res);
       },
       error: (err: HttpErrorResponse): HttpErrorResponse => {
@@ -111,7 +108,25 @@ export class QuizComponent implements OnInit, OnDestroy {
 
     return '';
   }
+
+  private resetQuestionProps() {
+    this.question.set(undefined);
+    this.pickedOption.set(undefined);
+    this.correctAnswer.set(undefined);
+  }
+
   ngOnDestroy(): void {
+    this.onRemoveClientSub = this.quizService.removeClientData().subscribe({
+      next: (res: { status: string }) => {
+        console.log(res.status);
+        this.onRemoveClientSub.unsubscribe();
+      },
+      error: (err: HttpErrorResponse): HttpErrorResponse => {
+        this.onRemoveClientSub.unsubscribe();
+        return err;
+      },
+    });
+    console.log('component destroyed');
     this.getQuestionSub?.unsubscribe();
     this.getIsCorrectSub?.unsubscribe();
     this.getResultsSub?.unsubscribe();

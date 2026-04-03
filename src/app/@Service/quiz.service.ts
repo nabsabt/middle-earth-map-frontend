@@ -29,4 +29,8 @@ export class QuizService {
       },
     );
   }
+
+  public removeClientData(): Observable<{ status: string }> {
+    return this.http.get<{ status: string }>(`${environment.apiURL}/api/removeClientData`);
+  }
 }
