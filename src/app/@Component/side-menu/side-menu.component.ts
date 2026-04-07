@@ -13,18 +13,12 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [ModalComponent, TranslateModule, CommonModule],
 })
 export class SideMenu {
-  //public modalToOpen = signal<ModalType | undefined>(undefined);
   public modalToggle = output<ModalType>();
 
   public isButtonsContainerOpened = signal<boolean>(false);
   constructor() {}
 
-  /* public toggleModal(modaltype: ModalType | undefined) {
-    console.log('clicked');
-    this.modalToOpen.set(modaltype);
-  } */
   public onOpenModal(modalName: ModalType) {
-    console.log('sidemenu componentben lefut');
     this.modalToggle.emit(modalName);
   }
 

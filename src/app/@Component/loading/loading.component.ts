@@ -3,15 +3,16 @@ import { Component, input } from '@angular/core';
 @Component({
   selector: 'loading',
   template: `
-    @if(isInitialLoad()){
-    <div class="loading-spinner-initial">
-      <!-- <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." /> -->
-      <h1>map of middle-earth</h1>
-    </div>
-    } @if(!isInitialLoad()){
-    <div class="loading-spinner">
-      <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." />
-    </div>
+    @if (isInitialLoad()) {
+      <div class="loading-spinner-initial">
+        <!-- <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." /> -->
+        <h1>Map of Middle-Earth</h1>
+      </div>
+    }
+    @if (!isInitialLoad()) {
+      <div class="loading-spinner">
+        <img src="assets/images/the_one_ring_loader.gif" alt="Loading..." />
+      </div>
     }
   `,
   styles: [
@@ -23,10 +24,10 @@ import { Component, input } from '@angular/core';
         left: 0;
         height: 100dvh;
         width: 100%;
+        z-index: 100;
       }
       .loading-spinner-initial {
         background-color: rgb(38, 9, 10);
-        z-index: 15;
       }
       .loading-spinner-initial h1 {
         position: absolute;
@@ -56,7 +57,9 @@ import { Component, input } from '@angular/core';
         background-clip: text;
         -webkit-text-fill-color: transparent;
 
-        animation: fadeIn 1.2s ease-out forwards, shine 2.8s linear 1.2s infinite;
+        animation:
+          fadeIn 1.2s ease-out forwards,
+          shine 2.8s linear 1.2s infinite;
       }
       @keyframes fadeIn {
         from {

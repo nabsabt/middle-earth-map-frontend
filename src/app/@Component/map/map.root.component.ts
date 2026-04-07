@@ -5,6 +5,7 @@ import {
   inject,
   OnDestroy,
   OnInit,
+  PLATFORM_ID,
   signal,
 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { GISObject, ModalType, Units } from '../../@Interface/maproot.interface';
 import { FeatureCollection } from 'geojson';
 import { LayerGroupKey } from '../../@Interface/maproot.interface';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../@Service/loader.service';
@@ -55,6 +56,7 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapService = inject(MapRootService);
   private loaderService = inject(LoaderService);
   private alertService = inject(AlertService);
+  private readonly platform = inject(PLATFORM_ID);
 
   public isLoading = signal<{ loading: boolean; initial: boolean }>({
     loading: false,
@@ -76,6 +78,12 @@ export class MapRootComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private translate: TranslateService) {
     this.title.setTitle('Map of Middle-Earth');
+
+    if (isPlatformBrowser(this.platform)) {
+      console.warn('browser');
+      const userid = localStorage.getItem('userID');
+      userid ? '' : localStorage.setItem('userID', new Date().getTime().toString());
+    }
 
     this.translate.onLangChange.subscribe((event) => {
       this.title.setTitle(event.lang === 'hu' ? 'Középfölde térképe' : 'Map of Middle-Earth ');

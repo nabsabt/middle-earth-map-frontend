@@ -42,6 +42,7 @@
   "QUIZ_LEVEL_HARD": "Nehéz",
   "QUIZ_NEXT": "Következő",
   "QUIZ_FINISH": "Eredmény",
+  "QUIZ_PERCENTAGE": "Végeredmény",
 
   "CHAT_NOT_ALLOWED": "Túl sok üzenetet küldtél, térj vissza kicsit később! Középfölde népének is kijár egy kis pihenés!",
   "CHAT_CHARSELECT_LABEL": "Válassz valakit",

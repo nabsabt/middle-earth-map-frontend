@@ -1,13 +1,10 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   inject,
   OnDestroy,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { QuizService } from '../../../@Service/quiz.service';
 import { AlertService } from '../../../@Service/alert.service';
@@ -17,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { ClearedQuestion, QuizResults } from '../../../@Interface/quiz.interface';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoaderService } from '../../../@Service/loader.service';
 
 @Component({
   selector: 'quiz',
@@ -41,13 +39,31 @@ export class QuizComponent implements OnInit, OnDestroy {
   public pickedOption = signal<number | undefined>(undefined);
   public correctAnswer = signal<number | undefined>(undefined);
 
-  private quizService = inject(QuizService);
+  public isLoading = signal<{ loading: boolean; initial: boolean }>({
+    loading: false,
+    initial: false,
+  });
 
-  constructor(public translateService: TranslateService) {}
-  ngOnInit(): void {}
+  private quizService = inject(QuizService);
+  private loaderService = inject(LoaderService);
+
+  constructor(public translateService: TranslateService) {
+    this.loaderService.$isLoadingAsObservable.subscribe(
+      (loading: { loading: boolean; initial: boolean }) => {
+        this.isLoading.set(loading);
+      },
+    );
+  }
+  ngOnInit(): void {
+    this.onRemoveClientSub = this.quizService.removeClientData().subscribe({
+      next: (res: { status: string }) => {},
+      error: (err: HttpErrorResponse): HttpErrorResponse => {
+        return err;
+      },
+    });
+  }
 
   public onLevelSelected(evt: 1 | 2 | 3) {
-    console.log(evt);
     this.selectedLevel.set(evt);
     this.getQuestion();
   }
@@ -56,11 +72,14 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.getQuestionSub?.unsubscribe();
 
     this.resetQuestionProps();
+    this.loaderService.showLoader(false);
     this.getQuestionSub = this.quizService.getQuestion(this.selectedLevel()!).subscribe({
       next: (res: ClearedQuestion) => {
         this.question.set(res);
+        this.loaderService.hideLoader();
       },
       error: (err: HttpErrorResponse): HttpErrorResponse => {
+        this.loaderService.hideLoader();
         return err;
       },
     });
@@ -68,24 +87,30 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   public onOptionSelected(option: number) {
     this.pickedOption.set(option);
+    this.loaderService.showLoader(false);
+
     this.getIsCorrectSub = this.quizService.getIsCorrect(this.question()!.pos, option).subscribe({
       next: (res: { correctAnswerNumber: number }) => {
-        console.log('ccorrect answer is: ', res.correctAnswerNumber);
+        this.loaderService.hideLoader();
         this.correctAnswer.set(res.correctAnswerNumber);
       },
       error: (error: HttpErrorResponse): HttpErrorResponse => {
+        this.loaderService.hideLoader();
         return error;
       },
     });
   }
 
   public getResult() {
+    this.loaderService.showLoader(false);
     this.getResultsSub = this.quizService.getResults().subscribe({
       next: (res: QuizResults) => {
+        this.loaderService.hideLoader();
         this.resetQuestionProps();
         this.result.set(res);
       },
       error: (err: HttpErrorResponse): HttpErrorResponse => {
+        this.loaderService.hideLoader();
         return err;
       },
     });
@@ -116,17 +141,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onRemoveClientSub = this.quizService.removeClientData().subscribe({
-      next: (res: { status: string }) => {
-        console.log(res.status);
-        this.onRemoveClientSub.unsubscribe();
-      },
-      error: (err: HttpErrorResponse): HttpErrorResponse => {
-        this.onRemoveClientSub.unsubscribe();
-        return err;
-      },
-    });
-    console.log('component destroyed');
+    this.onRemoveClientSub?.unsubscribe();
     this.getQuestionSub?.unsubscribe();
     this.getIsCorrectSub?.unsubscribe();
     this.getResultsSub?.unsubscribe();

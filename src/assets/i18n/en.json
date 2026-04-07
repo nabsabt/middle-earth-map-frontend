@@ -41,6 +41,7 @@
   "QUIZ_LEVEL_HARD": "Hard",
   "QUIZ_NEXT": "Next",
   "QUIZ_FINISH": "Finish",
+  "QUIZ_PERCENTAGE": "Result score",
 
   "CHAT_NOT_ALLOWED": "You chatted too much! Please, come back a bit later, folks of Middle Earth need some rest, too!",
   "CHAT_CHARSELECT_LABEL": "Choose someone",

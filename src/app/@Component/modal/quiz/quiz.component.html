@@ -13,7 +13,7 @@
     </div>
   }
   <!--Question block-->
-  @if (question() && !result()) {
+  @if (selectedLevel() && !result()) {
     <div class="question-answer-block">
       <div class="question-div">
         <span>{{ question()?.serial }}. {{ question()?.question }}</span>
@@ -24,7 +24,7 @@
             [disabled]="pickedOption()"
             class="options"
             (click)="onOptionSelected(+opt[0])"
-            [ngClass]="optionClass(+opt[0])"
+            [ngClass]="!isLoading().loading ? optionClass(+opt[0]) : ''"
           >
             <p>{{ opt[1] }}</p>
           </button>
@@ -35,7 +35,7 @@
   <!--Results block-->
   @if (!question() && result()) {
     <div class="results-block">
-      <h3>{{ result()?.percentage }}%</h3>
+      <h3>{{ 'QUIZ_PERCENTAGE' | translate }}: {{ result()?.percentage }}%</h3>
       <em>{{ result()?.responseMessage }}</em>
     </div>
   }

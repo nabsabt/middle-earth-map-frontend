@@ -20,7 +20,7 @@ import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-transla
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { GISObject, Units } from '../../@Interface/maproot.interface';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
-import 'photoswipe/style.css';
+//import 'photoswipe/style.css';
 import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 
 @Component({
