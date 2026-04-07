@@ -1,6 +1,7 @@
 .navbar {
   position: absolute;
-  padding: 1rem;
+  padding-top: 1rem;
+  width: 100dvw;
   display: flex;
   gap: 0.5rem;
   top: 0;
@@ -21,6 +22,7 @@
 /* DESKTOP VIEW */
 @media (min-width: 931px) {
   .navbar {
+    padding: 1rem;
     left: 0;
     z-index: 10;
     display: flex;
@@ -40,6 +42,7 @@
     .user-controls-container {
       margin-left: auto;
       margin-right: auto;
+      width: 92dvw;
     }
 
     .user-controls-container {
@@ -49,7 +52,7 @@
       overflow-x: auto;
       justify-content: flex-start;
       gap: 0.5rem;
-      max-width: 325px;
+      //max-width: 325px;
       padding-bottom: 0.2rem;
     }
   }

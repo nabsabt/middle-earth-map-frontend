@@ -147,6 +147,7 @@
 
 @media (max-width: 930px) {
   .me-search-field {
-    width: min(350px, 92vw);
+    // width: min(350px, 92vw);
+    width: 100%;
   }
 }
