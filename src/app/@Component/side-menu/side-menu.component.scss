@@ -19,6 +19,24 @@
   border-radius: 10px 0 0 10px;
   box-shadow: -6px 4px 12px 3px rgba(0, 0, 0, 0.79);
 
+  .toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    .menu-text {
+      writing-mode: vertical-lr;
+      span {
+        text-orientation: upright;
+        margin: 0;
+        color: var(--dark-grey);
+        font-weight: 700;
+        letter-spacing: 1.5rem;
+        font-size: 2rem;
+      }
+    }
+  }
+
   .buttons-container {
     display: flex;
     flex-direction: column;

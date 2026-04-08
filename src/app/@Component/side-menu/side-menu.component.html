@@ -11,7 +11,13 @@
         <img src="assets/icons/sidemenu-close.svg" />
       }
     </button>
+    @if (!isButtonsContainerOpened()) {
+      <div class="menu-text">
+        <span>menu</span>
+      </div>
+    }
   </div>
+
   <div class="buttons-container" [ngClass]="isButtonsContainerOpened() ? 'opened' : 'closed'">
     <!--Quiz-->
     <div>
